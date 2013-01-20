@@ -7,12 +7,15 @@
   stroke: #999;
   stroke-width: 1px;
 }
+#waypoints circle {
+  
+}
 </style>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 </head>
 <body>
 <script>
-var projection = d3.geo.albers().scale(1400).translate([680, 360]);
+var projection = d3.geo.albers().scale(3500).translate([90, 440]);
 
 var path = d3.geo.path()
     .projection(projection);
@@ -40,12 +43,29 @@ d3.json("us-states.json", function(json) {
 });
 
 d3.json("openpaths_davidstolarsky.json", function(op) {
+  console.log(op.length + " waypoints");
+  op = op.sort(function(a,b) {
+    if(a.t < b.t)
+      return -1;
+    if(a.t > b.t)
+      return 1;
+    return 0;
+  });
+  
+  var timeBounds = [op[0].t, op[op.length-1].t].map(function(t){
+    var d = new Date();
+    d.setTime(t*1000);
+    return d.toUTCString();
+  });
+  console.log("First: " + timeBounds[0]);
+  console.log("Last:  " + timeBounds[1]);
+  
   waypoints.selectAll("circle")
       .data(op)
     .enter().append("svg:circle")
       .attr("cx", 0)
       .attr("cy", 0)
-      .attr("r", 0.5)
+      .attr("r", 1.0)
       .attr("transform", OPPoint);
 });
 
