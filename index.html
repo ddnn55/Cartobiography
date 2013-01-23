@@ -43,7 +43,7 @@ d3.json("us-states.json", function(json) {
 });
 
 d3.json("openpaths_davidstolarsky.json", function(op) {
-  console.log(op.length + " waypoints");
+  console.log(op.length + " OpenPaths waypoints");
   op = op.sort(function(a,b) {
     if(a.t < b.t)
       return -1;

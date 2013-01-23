@@ -6,7 +6,6 @@ var im = require('imagemagick'),
 var geoPhotos = [];
 function loadGeoPhotoWorker(path, done)
 {
-  console.log("Opening " + path);
   im.readMetadata(path, function(err, metadata){
     if (err) throw err;
     
@@ -36,7 +35,7 @@ function loadGeoPhotoWorker(path, done)
     geoPhotos.push({
       'path' : path,
       'location' : location,
-      'time' : metadata.exif.dateTime
+      't' : metadata.exif.dateTime ? metadata.exif.dateTime.getTime() / 1000 : undefined
     });
 
     done();
@@ -48,17 +47,19 @@ var dir = process.argv[2];
 fs.readdir(dir, function(err, files) {
   jpgs = files.filter(function(file) { return /jpg/i.test(file); });
   jpgs = jpgs.map(function(file) { return path.join(dir, file); });
-  console.log('jpgs: ', jpgs);
   
   var q = async.queue(loadGeoPhotoWorker, 32);
   q.drain = function() {
-    console.log('All photos have been processed:');
-    console.log(geoPhotos);
+    process.stderr.write("\n");
+    process.stdout.write(JSON.stringify(geoPhotos));
   };
 
+  var count = jpgs.length;
+  var done = 0;
   jpgs.forEach(function(path) {
     q.push(path, function(err) {
-      console.log('Finished processing ' + path);
+      done++;
+      process.stderr.write("\r" + done + ' / ' + count);
     });
   });
 
