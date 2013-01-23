@@ -34,7 +34,8 @@ function loadGeoPhotoWorker(path, done)
   
     geoPhotos.push({
       'path' : path,
-      'location' : location,
+      'lon' : location[1],
+      'lat' : location[0],
       't' : metadata.exif.dateTime ? metadata.exif.dateTime.getTime() / 1000 : undefined
     });
 
