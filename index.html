@@ -2,6 +2,32 @@
 <html>
 <head>
 <style type="text/css">
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+.graticule {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
+.graticule :nth-child(2n) {
+  stroke-dasharray: 2,2;
+}
+
+.land {
+  /*fill: #d7c7ad;*/
+  fill: none;
+  stroke: #766951;
+}
+
+.boundary {
+  fill: none;
+  stroke: #a5967e;
+}
+
 #states path {
   fill: none;
   stroke: #999;
@@ -12,28 +38,43 @@
 }
 </style>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v0.min.js"></script>
 </head>
 <body>
 <script>
-var projection = d3.geo.albers().scale(3500).translate([90, 440]);
+// US east
+//var projection = d3.geo.albers().scale(3500).translate([90, 440]);
+
+var projection = d3.geo.mercator()
+                   .scale(2500)
+		   .translate([800, 700])
+		   ;
 
 var path = d3.geo.path()
     .projection(projection);
 
-var OPPoint = function(opEntry) {
+var CBPoint = function(opEntry) {
   return "translate(" + projection([opEntry.lon, opEntry.lat]).join(',') + ")";
 };
 
 var svg = d3.select("body").append("svg:svg")
     .attr("class", "Blues")
-    .attr("width", 1280)
-    .attr("height", 800);
+    .attr("width", window.width)
+    .attr("height", window.height);
 
-var states = svg.append("svg:g")
-    .attr("id", "states");
 
-var waypoints = svg.append("svg:g")
-    .attr("id", "waypoints");
+
+d3.json("world-110m.json", function(error, world) {
+  svg.insert("path", ".graticule")
+      .datum(topojson.object(world, world.objects.land))
+      .attr("class", "land")
+      .attr("d", path);
+
+  svg.insert("path", ".graticule")
+      .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a.id !== b.id; }))
+      .attr("class", "boundary")
+      .attr("d", path);
+});
 
 d3.json("us-states.json", function(json) {
   states.selectAll("path")
@@ -42,31 +83,42 @@ d3.json("us-states.json", function(json) {
       .attr("d", path);
 });
 
+var states = svg.append("svg:g")
+    .attr("id", "states");
+
+var waypoints = svg.append("svg:g")
+    .attr("id", "waypoints");
+
 d3.json("openpaths_davidstolarsky.json", function(op) {
   console.log(op.length + " OpenPaths waypoints");
-  op = op.sort(function(a,b) {
-    if(a.t < b.t)
-      return -1;
-    if(a.t > b.t)
-      return 1;
-    return 0;
+  d3.json("photos.json", function(photos) {
+    console.log(photos.length + " geotagged photos");
+    var all = op.concat(photos);
+    
+    all = all.sort(function(a,b) {
+      if(a.t < b.t)
+        return -1;
+      if(a.t > b.t)
+        return 1;
+      return 0;
+    });
+    
+    var timeBounds = [all[0].t, all[all.length-1].t].map(function(t){
+      var d = new Date();
+      d.setTime(t*1000);
+      return d.toUTCString();
+    });
+    console.log("First: " + timeBounds[0]);
+    console.log("Last:  " + timeBounds[1]);
+    
+    waypoints.selectAll("circle")
+        .data(all)
+      .enter().append("svg:circle")
+        .attr("cx", 0)
+        .attr("cy", 0)
+        .attr("r", 1.0)
+        .attr("transform", CBPoint);
   });
-  
-  var timeBounds = [op[0].t, op[op.length-1].t].map(function(t){
-    var d = new Date();
-    d.setTime(t*1000);
-    return d.toUTCString();
-  });
-  console.log("First: " + timeBounds[0]);
-  console.log("Last:  " + timeBounds[1]);
-  
-  waypoints.selectAll("circle")
-      .data(op)
-    .enter().append("svg:circle")
-      .attr("cx", 0)
-      .attr("cy", 0)
-      .attr("r", 1.0)
-      .attr("transform", OPPoint);
 });
 
 d3.select("select").on("change", function() {
