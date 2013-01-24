@@ -5,6 +5,7 @@
 body {
   margin: 0;
   overflow: hidden;
+  background-color: #a4bac7;
 }
 
 .graticule {
@@ -18,8 +19,7 @@ body {
 }
 
 .land {
-  /*fill: #d7c7ad;*/
-  fill: none;
+  fill: #d7c7ad;
   stroke: #766951;
 }
 
@@ -42,7 +42,9 @@ body {
 </head>
 <body>
 <script>
-var strokeWidth = 1.0;
+var strokeWidth = 1.0
+  , waypointRadius = 2.0
+  ;
 
 // US east
 //var projection = d3.geo.albers().scale(3500).translate([90, 440]);
@@ -71,8 +73,6 @@ var svg = d3.select("body").append("svg:svg")
     .attr("height", window.height)
     .call(zoom);
 
-
-
 var geoclip = svg.append("svg:g")
     .attr("id", "geoclip");
 
@@ -84,7 +84,6 @@ var states = map.append("svg:g")
 
 var waypoints = geoclip.append("svg:g")
     .attr("id", "waypoints");
-
 
 
 d3.json("us-states.json", function(json) {
@@ -144,12 +143,8 @@ d3.select("select").on("change", function() {
 
 function zoom() {
   geoclip.attr('transform', 'translate('+d3.event.translate+') scale('+d3.event.scale+')');
-  map.selectAll('path').style("stroke-width", 1.0 / d3.event.scale + "px");
-  //map.selectAll('path').style.stroke-width = strokeWidth * d3.event.scale + "px";
-  //projection.translate(d3.event.translate).scale(d3.event.scale);
-  //waypoints.selectAll("circle").attr("transform", CBPoint);
-  //map.selectAll("path").attr("d", path);
-  //states.selectAll("path").attr("d", path);
+  map.selectAll('path').style("stroke-width", strokeWidth / d3.event.scale + "px");
+  waypoints.selectAll('circle').attr("r", waypointRadius / d3.event.scale + "px");
 }
 </script>
 </body>
