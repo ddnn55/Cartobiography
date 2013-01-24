@@ -1,15 +1,15 @@
+var fs = require('fs');
+
 // Server setup
 var express = require("express");
-var app = express();
+var app = express(express.logger());
 
-// Template and Static Files
-var fs = require('fs');
+app.get('/f', function(request, response) {
+  response.send(request.query.path);
+});
+
+// Static Files
 app.use('/', express.static('www'));
-
-/*var indexHtml = fs.readFileSync('index.html', 'utf8');
-app.get('/', function(request, response) {
-  response.send(indexHtml);
-});*/
 
 // Start it up
 var port = process.env.PORT || 5000;
