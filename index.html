@@ -31,7 +31,7 @@ body {
 #states path {
   fill: none;
   stroke: #999;
-  stroke-width: 1px;
+  /*stroke-width: 1px;*/
 }
 #waypoints circle {
   
@@ -42,12 +42,14 @@ body {
 </head>
 <body>
 <script>
+var strokeWidth = 1.0;
+
 // US east
 //var projection = d3.geo.albers().scale(3500).translate([90, 440]);
 
 var projection = d3.geo.mercator()
-                   .scale(2500)
-		   .translate([800, 700])
+                   .scale(3500)
+		   .translate([1000, 700])
 		   ;
 
 var path = d3.geo.path()
@@ -57,24 +59,33 @@ var CBPoint = function(opEntry) {
   return "translate(" + projection([opEntry.lon, opEntry.lat]).join(',') + ")";
 };
 
+var zoom = d3.behavior.zoom()
+    //.translate(projection.translate())
+    //.scale(projection.scale())
+    //.scaleExtent([window.height, 8 * window.height])
+    .on("zoom", zoom);
+
 var svg = d3.select("body").append("svg:svg")
     .attr("class", "Blues")
     .attr("width", window.width)
-    .attr("height", window.height);
+    .attr("height", window.height)
+    .call(zoom);
 
 
 
-d3.json("world-110m.json", function(error, world) {
-  svg.insert("path", ".graticule")
-      .datum(topojson.object(world, world.objects.land))
-      .attr("class", "land")
-      .attr("d", path);
+var geoclip = svg.append("svg:g")
+    .attr("id", "geoclip");
 
-  svg.insert("path", ".graticule")
-      .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a.id !== b.id; }))
-      .attr("class", "boundary")
-      .attr("d", path);
-});
+var map = geoclip.append("svg:g")
+    .attr("id", "map");
+
+var states = map.append("svg:g")
+    .attr("id", "states");
+
+var waypoints = geoclip.append("svg:g")
+    .attr("id", "waypoints");
+
+
 
 d3.json("us-states.json", function(json) {
   states.selectAll("path")
@@ -83,11 +94,17 @@ d3.json("us-states.json", function(json) {
       .attr("d", path);
 });
 
-var states = svg.append("svg:g")
-    .attr("id", "states");
+d3.json("world-110m.json", function(error, world) {
+  map.insert("path", ".graticule")
+      .datum(topojson.object(world, world.objects.land))
+      .attr("class", "land")
+      .attr("d", path);
 
-var waypoints = svg.append("svg:g")
-    .attr("id", "waypoints");
+  map.insert("path", ".graticule")
+      .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a.id !== b.id; }))
+      .attr("class", "boundary")
+      .attr("d", path);
+});
 
 d3.json("openpaths_davidstolarsky.json", function(op) {
   console.log(op.length + " OpenPaths waypoints");
@@ -124,6 +141,16 @@ d3.json("openpaths_davidstolarsky.json", function(op) {
 d3.select("select").on("change", function() {
   d3.selectAll("svg").attr("class", this.value);
 });
+
+function zoom() {
+  geoclip.attr('transform', 'translate('+d3.event.translate+') scale('+d3.event.scale+')');
+  map.selectAll('path').style("stroke-width", 1.0 / d3.event.scale + "px");
+  //map.selectAll('path').style.stroke-width = strokeWidth * d3.event.scale + "px";
+  //projection.translate(d3.event.translate).scale(d3.event.scale);
+  //waypoints.selectAll("circle").attr("transform", CBPoint);
+  //map.selectAll("path").attr("d", path);
+  //states.selectAll("path").attr("d", path);
+}
 </script>
 </body>
 </html>
