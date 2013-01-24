@@ -5,7 +5,7 @@ var express = require("express");
 var app = express(express.logger());
 
 app.get('/f', function(request, response) {
-  response.send(request.query.path);
+  response.sendfile(request.query.path);
 });
 
 // Static Files
