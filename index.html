@@ -36,6 +36,12 @@ body {
 #waypoints circle {
   
 }
+.photo {
+  fill: #cc2233;
+}
+.photo:hover {
+  cursor:pointer;
+}
 </style>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/topojson.v0.min.js"></script>
@@ -45,6 +51,8 @@ body {
 var strokeWidth = 1.0
   , waypointRadius = 2.0
   ;
+
+var all, scale = 1.0;
 
 // US east
 //var projection = d3.geo.albers().scale(3500).translate([90, 440]);
@@ -57,9 +65,20 @@ var projection = d3.geo.mercator()
 var path = d3.geo.path()
     .projection(projection);
 
-var CBPoint = function(opEntry) {
-  return "translate(" + projection([opEntry.lon, opEntry.lat]).join(',') + ")";
-};
+var CBPoint = {
+  transform : function(pt) {
+    return "translate(" + projection([pt.lon, pt.lat]).join(',') + ")";
+  },
+  class : function(pt) {
+    return pt.path ? "photo" : "op";
+  },
+  radius : function(pt) {
+    return (pt.path ? 5 : 2) / scale + "px";
+  },
+  click : function(pt) {
+    console.log(pt.path);
+  }
+}
 
 var zoom = d3.behavior.zoom()
     //.translate(projection.translate())
@@ -109,7 +128,7 @@ d3.json("openpaths_davidstolarsky.json", function(op) {
   console.log(op.length + " OpenPaths waypoints");
   d3.json("photos.json", function(photos) {
     console.log(photos.length + " geotagged photos");
-    var all = op.concat(photos);
+    all = op.concat(photos);
     
     all = all.sort(function(a,b) {
       if(a.t < b.t)
@@ -132,8 +151,10 @@ d3.json("openpaths_davidstolarsky.json", function(op) {
       .enter().append("svg:circle")
         .attr("cx", 0)
         .attr("cy", 0)
-        .attr("r", 1.0)
-        .attr("transform", CBPoint);
+        .attr("r", CBPoint.radius)
+        .attr("transform", CBPoint.transform)
+	.attr("class", CBPoint.class)
+	.on("click", CBPoint.click);
   });
 });
 
@@ -144,7 +165,10 @@ d3.select("select").on("change", function() {
 function zoom() {
   geoclip.attr('transform', 'translate('+d3.event.translate+') scale('+d3.event.scale+')');
   map.selectAll('path').style("stroke-width", strokeWidth / d3.event.scale + "px");
-  waypoints.selectAll('circle').attr("r", waypointRadius / d3.event.scale + "px");
+  
+  scale = d3.event.scale;
+  //waypoints.selectAll('circle').attr("r", waypointRadius / d3.event.scale + "px");
+  waypoints.selectAll('circle').data(all).attr("r", CBPoint.radius);
 }
 </script>
 </body>
