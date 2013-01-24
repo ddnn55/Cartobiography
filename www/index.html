@@ -43,6 +43,14 @@ body {
 .photo:hover {
   cursor:pointer;
 }
+.photo-popover {
+  z-index: 1;
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 300px;
+  height: 300px;
+}
 </style>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/topojson.v0.min.js"></script>
@@ -50,7 +58,7 @@ body {
 <script src="bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div id="tooltips"></div>
+<!--<div id="tooltips"></div>-->
 <script>
 var strokeWidth = 1.0
   , waypointRadius = 2.0
@@ -86,8 +94,10 @@ var CBPoint = {
     return pt.path;
   },
   click : function(pt) {
-    console.log(pt.path);
-    window.location = "/f?path=" + pt.path;
+    window.open("/f?path=" + pt.path, '_blank');
+  },
+  photoUrl : function(pt) {
+    return pt.path ? "/f?path=" + pt.path : "";
   }
 }
 
@@ -168,10 +178,20 @@ d3.json("openpaths_davidstolarsky.json", function(op) {
 	.attr("title", CBPoint.path)
 	.attr("id", CBPoint.id)
 	.on("click", CBPoint.click)
-	//.on("mouseover", function(d, i) { console.log('over', d); $('#photo-'+i).tooltip('show'); })
+	.on("mouseover", function(d, i) {
+	  d3.select('body').append('div').datum(d)
+	      .attr('id', 'photo-'+i+'-popover')
+	      .attr('class', 'photo-popover')
+	      .style('left', '0px')
+	      .style('top', '0px')
+	      .style('background-image', 'url('+CBPoint.photoUrl(d)+')');
+	})
+	.on("mouseout", function(d, i) {
+	  d3.select('#photo-'+i+'-popover').remove();
+	})
 	;
   
-    //$('.photo').tooltip({title : 'hello!', selector : '#tooltips'});
+    $('.photo').popover({trigger : 'hover', title : 'hello!'});
   });
 });
 
