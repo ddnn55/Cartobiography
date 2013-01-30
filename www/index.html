@@ -94,7 +94,7 @@ var CBPoint = {
     return pt.path;
   },
   click : function(pt) {
-    window.open("/f?path=" + pt.path, '_blank');
+    window.open(pt.path ? "/f?path=" + pt.path : "//maps.google.com/maps?q="+pt.lat+","+pt.lon , '_blank');
   },
   photoUrl : function(pt) {
     return pt.path ? "/f?path=" + pt.path : "";
