@@ -10,16 +10,50 @@ var projection = d3.geo.mercator()
       .scale(3500)
       .translate([1000, 700]);
 
-function makeFauxCartoProjection(points)
+function makeFauxCartoProjection(_points)
 {
-  return d3.geo.projection(function(λ, φ) {
+  var mercator = d3.geo.mercator();
+
+  var points = _points.map(function(pt) {
+    return mercator([pt.lon, pt.lat]);
+  });
+
+  console.log('points', points);
+
+  function compareNumbers(a,b) { return a - b; };
+  var xs = points.map(function(p){ return p[0]; }).sort(compareNumbers);
+  var ys = points.map(function(p){ return p[1]; }).sort(compareNumbers);
+
+  console.log(xs);
+
+  var fauxCarto1d = function(ticks) {
+    return function(from) {
+      var low = 0, high = ticks.length-1, test;
+      while( (test = Math.floor((low+high)/2)) != low ) {
+        if(ticks[test] > from)
+	  high = test;
+	else
+	  low = test;
+      }
+      console.log(ticks[low], from, ticks[high]);
+      return from;
+    }
+  }
+
+  var x = fauxCarto1d(xs);
+  var y = fauxCarto1d(ys);
+
+  var fauxCartoProjection = d3.geo.projection(function(λ, φ) {
+    var pMercator = mercator([λ, φ]);
     return [
-      λ / (2 * π),
-      Math.max(-.5, Math.min(+.5, Math.log(Math.tan(π / 4 + φ / 2)) / (2 * π)))
+      x(pMercator[0]),
+      y(pMercator[1])
     ];
   })
     .scale(3500)
     .translate([1000, 700]);
+
+  return fauxCartoProjection;
 }
 
 
@@ -68,9 +102,11 @@ d3.json("world-110m.json", function(error, world) {
       .attr("d", path);
 });
 
-d3.json("openpaths_davidstolarsky.json", function(op) {
-  console.log(op.length + " OpenPaths waypoints");
+//d3.json("openpaths_davidstolarsky.json", function(op) {
+  //console.log(op.length + " OpenPaths waypoints");
   d3.json("photos.json", function(photos) {
+
+    photos = photos.splice(0, 10);
     console.log(photos.length + " geotagged photos");
 
     // make 1d-1d-faux-cartogram projection
@@ -78,7 +114,8 @@ d3.json("openpaths_davidstolarsky.json", function(op) {
     var fauxCartoPath = d3.geo.path()
           .projection(fauxCartoProjection);
 
-    all = op.concat(photos);
+    //all = op.concat(photos);
+    all = photos;
     
     all = all.sort(function(a,b) {
       if(a.t < b.t)
@@ -98,7 +135,7 @@ d3.json("openpaths_davidstolarsky.json", function(op) {
    
     var CBPoint = {
       transform : function(pt) {
-        return "translate(" + projection([pt.lon, pt.lat]).join(',') + ")";
+        return "translate(" + fauxCartoProjection([pt.lon, pt.lat]).join(',') + ")";
       },
       class : function(pt) {
         return pt.path ? "photo" : "op";
@@ -161,7 +198,7 @@ d3.json("openpaths_davidstolarsky.json", function(op) {
  
 
   });
-});
+//});
 
 d3.select("select").on("change", function() {
   d3.selectAll("svg").attr("class", this.value);
