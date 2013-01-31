@@ -1,55 +1,40 @@
 var strokeWidth = 1.0
   , waypointRadius = 2.0
+  , π = 3.14159265359
   ;
 
 var all, scale = 1.0;
 
-// US east
-//var projection = d3.geo.albers().scale(3500).translate([90, 440]);
 
 var projection = d3.geo.mercator()
-                   .scale(3500)
-		   .translate([1000, 700])
-		   ;
+      .scale(3500)
+      .translate([1000, 700]);
+
+function makeFauxCartoProjection(points)
+{
+  return d3.geo.projection(function(λ, φ) {
+    return [
+      λ / (2 * π),
+      Math.max(-.5, Math.min(+.5, Math.log(Math.tan(π / 4 + φ / 2)) / (2 * π)))
+    ];
+  })
+    .scale(3500)
+    .translate([1000, 700]);
+}
+
 
 var path = d3.geo.path()
     .projection(projection);
 
-var CBPoint = {
-  transform : function(pt) {
-    return "translate(" + projection([pt.lon, pt.lat]).join(',') + ")";
-  },
-  class : function(pt) {
-    return pt.path ? "photo" : "op";
-  },
-  id : function(pt, i) {
-    return "photo-" + i;
-  },
-  radius : function(pt) {
-    return (pt.path ? 5 : 2) / scale + "px";
-  },
-  path : function(pt) {
-    return pt.path;
-  },
-  click : function(pt) {
-    window.open(pt.path ? "/f?path=" + pt.path : "//maps.google.com/maps?q="+pt.lat+","+pt.lon , '_blank');
-  },
-  photoUrl : function(pt) {
-    return pt.path ? "/f?path=" + pt.path : "";
-  }
-}
 
-var zoom = d3.behavior.zoom()
-    //.translate(projection.translate())
-    //.scale(projection.scale())
-    //.scaleExtent([window.height, 8 * window.height])
-    .on("zoom", zoom);
+
+
 
 var svg = d3.select("body").append("svg:svg")
     .attr("class", "Blues")
     .attr("width", window.width)
-    .attr("height", window.height)
-    .call(zoom);
+    .attr("height", window.height);
+    //.call(zoom);
 
 var geoclip = svg.append("svg:g")
     .attr("id", "geoclip");
@@ -87,6 +72,12 @@ d3.json("openpaths_davidstolarsky.json", function(op) {
   console.log(op.length + " OpenPaths waypoints");
   d3.json("photos.json", function(photos) {
     console.log(photos.length + " geotagged photos");
+
+    // make 1d-1d-faux-cartogram projection
+    var fauxCartoProjection = makeFauxCartoProjection(photos);
+    var fauxCartoPath = d3.geo.path()
+          .projection(fauxCartoProjection);
+
     all = op.concat(photos);
     
     all = all.sort(function(a,b) {
@@ -104,7 +95,31 @@ d3.json("openpaths_davidstolarsky.json", function(op) {
     });
     console.log("First: " + timeBounds[0]);
     console.log("Last:  " + timeBounds[1]);
-    
+   
+    var CBPoint = {
+      transform : function(pt) {
+        return "translate(" + projection([pt.lon, pt.lat]).join(',') + ")";
+      },
+      class : function(pt) {
+        return pt.path ? "photo" : "op";
+      },
+      id : function(pt, i) {
+        return "photo-" + i;
+      },
+      radius : function(pt) {
+        return (pt.path ? 5 : 2) / scale + "px";
+      },
+      path : function(pt) {
+        return pt.path;
+      },
+      click : function(pt) {
+        window.open(pt.path ? "/f?path=" + pt.path : "//maps.google.com/maps?q="+pt.lat+","+pt.lon , '_blank');
+      },
+      photoUrl : function(pt) {
+        return pt.path ? "/f?path=" + pt.path : "";
+      }
+    }
+
     waypoints.selectAll("circle")
         .data(all)
       .enter().append("svg:circle")
@@ -128,8 +143,23 @@ d3.json("openpaths_davidstolarsky.json", function(op) {
 	  d3.select('#photo-'+i+'-popover').remove();
 	})
 	;
-  
-    $('.photo').popover({trigger : 'hover', title : 'hello!'});
+    var zoom = d3.behavior.zoom()
+      //.translate(projection.translate())
+      //.scale(projection.scale())
+      //.scaleExtent([window.height, 8 * window.height])
+      .on("zoom", zoom);
+
+    svg.call(zoom);
+
+    function zoom() {
+      geoclip.attr('transform', 'translate('+d3.event.translate+') scale('+d3.event.scale+')');
+      map.selectAll('path').style("stroke-width", strokeWidth / d3.event.scale + "px");
+      
+      scale = d3.event.scale;
+      waypoints.selectAll('circle').data(all).attr("r", CBPoint.radius);
+    }
+ 
+
   });
 });
 
@@ -137,12 +167,5 @@ d3.select("select").on("change", function() {
   d3.selectAll("svg").attr("class", this.value);
 });
 
-function zoom() {
-  geoclip.attr('transform', 'translate('+d3.event.translate+') scale('+d3.event.scale+')');
-  map.selectAll('path').style("stroke-width", strokeWidth / d3.event.scale + "px");
-  
-  scale = d3.event.scale;
-  //waypoints.selectAll('circle').attr("r", waypointRadius / d3.event.scale + "px");
-  waypoints.selectAll('circle').data(all).attr("r", CBPoint.radius);
-}
+
 
