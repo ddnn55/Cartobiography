@@ -12,7 +12,13 @@ var projection = d3.geo.mercator()
 
 function makeFauxCartoProjection(_points)
 {
-  var mercator = d3.geo.mercator();
+  /*function mercator(λ, φ) {
+    return [
+      λ / (2 * π),
+      Math.max(-.5, Math.min(+.5, Math.log(Math.tan(π / 4 + φ / 2)) / (2 * π)))
+    ];
+  }*/
+  var mercator = d3.geo.mercator().scale(1).translate([0, 0]);
 
   var points = _points.map(function(pt) {
     return mercator([pt.lon, pt.lat]);
@@ -24,7 +30,7 @@ function makeFauxCartoProjection(_points)
   var xs = points.map(function(p){ return p[0]; }).sort(compareNumbers);
   var ys = points.map(function(p){ return p[1]; }).sort(compareNumbers);
 
-  console.log(xs);
+  console.log('xs', xs);
 
   var fauxCarto1d = function(ticks) {
     return function(from) {
@@ -35,7 +41,7 @@ function makeFauxCartoProjection(_points)
 	else
 	  low = test;
       }
-      console.log(ticks[low], from, ticks[high]);
+      //console.log('bin search result',"\n", ticks[low],"\n", from,"\n", ticks[high]);
       return from;
     }
   }
@@ -44,10 +50,13 @@ function makeFauxCartoProjection(_points)
   var y = fauxCarto1d(ys);
 
   var fauxCartoProjection = d3.geo.projection(function(λ, φ) {
-    var pMercator = mercator([λ, φ]);
+    var lon = λ * 180 / π, lat = φ * 180 / π;
+    //console.log("λ, φ", λ * 180 / π, φ * 180 / π);
+    var pMercator = mercator([lon, lat]);
+    //console.log('pMercator', pMercator);
     return [
       x(pMercator[0]),
-      y(pMercator[1])
+      -y(pMercator[1])
     ];
   })
     .scale(3500)
@@ -90,17 +99,7 @@ d3.json("us-states.json", function(json) {
       .attr("d", path);
 });
 
-d3.json("world-110m.json", function(error, world) {
-  map.insert("path", ".graticule")
-      .datum(topojson.object(world, world.objects.land))
-      .attr("class", "land")
-      .attr("d", path);
 
-  map.insert("path", ".graticule")
-      .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a.id !== b.id; }))
-      .attr("class", "boundary")
-      .attr("d", path);
-});
 
 //d3.json("openpaths_davidstolarsky.json", function(op) {
   //console.log(op.length + " OpenPaths waypoints");
@@ -113,6 +112,18 @@ d3.json("world-110m.json", function(error, world) {
     var fauxCartoProjection = makeFauxCartoProjection(photos);
     var fauxCartoPath = d3.geo.path()
           .projection(fauxCartoProjection);
+
+    d3.json("world-110m.json", function(error, world) {
+      map.insert("path", ".graticule")
+          .datum(topojson.object(world, world.objects.land))
+          .attr("class", "land")
+          .attr("d", fauxCartoPath);
+    
+      map.insert("path", ".graticule")
+          .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a.id !== b.id; }))
+          .attr("class", "boundary")
+          .attr("d", fauxCartoPath);
+    });
 
     //all = op.concat(photos);
     all = photos;
