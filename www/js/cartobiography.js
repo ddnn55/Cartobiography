@@ -33,7 +33,11 @@ function makeFauxCartoProjection(_points)
   console.log('xs', xs);
 
   var fauxCarto1d = function(ticks) {
+    var span = ticks[ticks.length-1] - ticks[0];
+    console.log('span', span);
     return function(from) {
+      if(from <= ticks[0]) return ticks[0];
+      if(from >= ticks[ticks.length-1]) return ticks[ticks.length-1];
       var low = 0, high = ticks.length-1, test;
       while( (test = Math.floor((low+high)/2)) != low ) {
         if(ticks[test] > from)
@@ -41,8 +45,11 @@ function makeFauxCartoProjection(_points)
 	else
 	  low = test;
       }
-      //console.log('bin search result',"\n", ticks[low],"\n", from,"\n", ticks[high]);
-      return from;
+      var binPos = (from - ticks[low]) / (ticks[high] - ticks[low]);
+      var totalPos = (low + binPos) / ticks.length;
+      var to = ticks[0] + totalPos * span;
+      //console.log('totalPos, from, to', totalPos, from, to);
+      return to;
     }
   }
 
@@ -51,9 +58,7 @@ function makeFauxCartoProjection(_points)
 
   var fauxCartoProjection = d3.geo.projection(function(λ, φ) {
     var lon = λ * 180 / π, lat = φ * 180 / π;
-    //console.log("λ, φ", λ * 180 / π, φ * 180 / π);
     var pMercator = mercator([lon, lat]);
-    //console.log('pMercator', pMercator);
     return [
       x(pMercator[0]),
       -y(pMercator[1])
@@ -68,9 +73,6 @@ function makeFauxCartoProjection(_points)
 
 var path = d3.geo.path()
     .projection(projection);
-
-
-
 
 
 var svg = d3.select("body").append("svg:svg")
@@ -92,12 +94,12 @@ var waypoints = geoclip.append("svg:g")
     .attr("id", "waypoints");
 
 
-d3.json("us-states.json", function(json) {
+/*d3.json("us-states.json", function(json) {
   states.selectAll("path")
       .data(json.features)
     .enter().append("svg:path")
       .attr("d", path);
-});
+});*/
 
 
 
@@ -105,7 +107,7 @@ d3.json("us-states.json", function(json) {
   //console.log(op.length + " OpenPaths waypoints");
   d3.json("photos.json", function(photos) {
 
-    photos = photos.splice(0, 10);
+    //photos = photos.splice(0, 100);
     console.log(photos.length + " geotagged photos");
 
     // make 1d-1d-faux-cartogram projection
