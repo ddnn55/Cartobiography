@@ -1,6 +1,7 @@
 var strokeWidth = 1.0
   , waypointRadius = 2.0
   , π = 3.14159265359
+  , fauxCartoPower = 0.3
   ;
 
 var all, scale = 1.0;
@@ -49,7 +50,7 @@ function makeFauxCartoProjection(_points)
       var totalPos = (low + binPos) / ticks.length;
       var to = ticks[0] + totalPos * span;
       //console.log('totalPos, from, to', totalPos, from, to);
-      return to;
+      return fauxCartoPower * to + (1 - fauxCartoPower) * from;
     }
   }
 
