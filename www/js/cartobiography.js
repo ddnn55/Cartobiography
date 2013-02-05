@@ -128,7 +128,7 @@ $(document).ready(function() {
         return 1;
       return 0;
     });
-    
+
     var timeBounds = [all[0].t, all[all.length-1].t].map(function(t){
       var d = new Date();
       d.setTime(t*1000);
@@ -136,10 +136,13 @@ $(document).ready(function() {
     });
     console.log("First: " + timeBounds[0]);
     console.log("Last:  " + timeBounds[1]);
-   
+
     var CBPoint = {
       transform : function(pt) {
         return "translate(" + fauxCartoProjection([pt.lon, pt.lat]).join(',') + ")";
+      },
+      vertex : function(pt) {
+        return fauxCartoProjection([pt.lon, pt.lat]);
       },
       class : function(pt) {
         return pt.path ? "photo" : "op";
@@ -160,6 +163,23 @@ $(document).ready(function() {
         return pt.path ? "/f?path=" + pt.path : "";
       }
     }
+
+    var hash = {};
+    var vertices = all.map(CBPoint.vertex).map(function(v) {
+      function key(v) { return v[0] + "_" + v[1]; }
+      while(key(v) in hash) {
+	console.log(v,'-->');
+	var eps = 0.0000001;
+        v[0] += eps / 2.0 - eps * Math.random();
+        v[1] += eps / 2.0 - eps * Math.random();
+	console.log(v);
+      }
+      hash[key(v)] = true;
+      return v;
+    });
+    console.log('vertices', vertices);
+    var voronoi = d3.geom.voronoi(vertices);
+    console.log(voronoi);
 
     waypoints.selectAll("circle")
         .data(all)
