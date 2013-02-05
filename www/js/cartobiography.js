@@ -16,13 +16,9 @@ function makeFauxCartoProjection(_points, size)
     return mercator([pt.lon, pt.lat]);
   });
 
-  console.log('points', points);
-
   function compareNumbers(a,b) { return a - b; };
   var xs = points.map(function(p){ return p[0]; }).sort(compareNumbers);
   var ys = points.map(function(p){ return p[1]; }).sort(compareNumbers);
-
-  console.log('xs', xs);
 
   var fauxCarto1d = function(ticks, size) {
     var span = ticks[ticks.length-1] - ticks[0];
@@ -85,6 +81,7 @@ var waypoints = geoclip.append("svg:g")
     .attr("id", "waypoints");
 
 
+
 /*d3.json("us-states.json", function(json) {
   states.selectAll("path")
       .data(json.features)
@@ -100,6 +97,15 @@ $(document).ready(function() {
 
     //photos = photos.splice(0, 100);
     console.log(photos.length + " geotagged photos");
+
+    var viewportSize = [$(window).width(), $(window).height()];
+
+    var viewportBounds = d3.geom.polygon([
+      [0, 0],
+      [0, viewportSize[1]],
+      [viewportSize[0], viewportSize[1]],
+      [viewportSize[0], viewportSize[1]]
+    ]);
 
     // make 1d-1d-faux-cartogram projection
     var fauxCartoProjection = makeFauxCartoProjection(photos, [$(window).width(), $(window).height()]);
@@ -164,22 +170,30 @@ $(document).ready(function() {
       }
     }
 
+    var voronoiLayer = geoclip.append("svg:g")
+        .attr("id", "voronoi");
     var hash = {};
     var vertices = all.map(CBPoint.vertex).map(function(v) {
       function key(v) { return v[0] + "_" + v[1]; }
       while(key(v) in hash) {
-	console.log(v,'-->');
 	var eps = 0.0000001;
         v[0] += eps / 2.0 - eps * Math.random();
         v[1] += eps / 2.0 - eps * Math.random();
-	console.log(v);
       }
       hash[key(v)] = true;
       return v;
     });
-    console.log('vertices', vertices);
-    var voronoi = d3.geom.voronoi(vertices);
+    var left   = Math.min.apply(null, vertices.map(function(v){return v[0];}));
+    var right  = Math.max.apply(null, vertices.map(function(v){return v[0];}));
+    var top    = Math.min.apply(null, vertices.map(function(v){return v[1];}));
+    var bottom = Math.max.apply(null, vertices.map(function(v){return v[1];}));
+    console.log(left, right, bottom, top);
+    var voronoi = d3.geom.voronoi(vertices);//.map(function(cell) { return viewportBounds.clip(cell); });
     console.log(voronoi);
+    voronoiLayer.selectAll("path")
+                 .data(voronoi)
+	       .enter().append("path")
+	         .attr("d", function(d) { return "M" + d.join("L") + "Z"; });
 
     waypoints.selectAll("circle")
         .data(all)
@@ -205,11 +219,12 @@ $(document).ready(function() {
 	})
 	;
     var zoom = d3.behavior.zoom()
-      //.translate(projection.translate())
+      .translate([-left, -top])
       //.scale(projection.scale())
       //.scaleExtent([window.height, 8 * window.height])
       .on("zoom", zoom);
 
+    geoclip.attr('transform', "translate("+[-left, -top].join(",")+")");
     svg.call(zoom);
 
     function zoom() {
