@@ -7,18 +7,9 @@ var strokeWidth = 1.0
 var all, scale = 1.0;
 
 
-var projection = d3.geo.mercator()
-      .scale(3500)
-      .translate([1000, 700]);
 
-function makeFauxCartoProjection(_points)
+function makeFauxCartoProjection(_points, size)
 {
-  /*function mercator(λ, φ) {
-    return [
-      λ / (2 * π),
-      Math.max(-.5, Math.min(+.5, Math.log(Math.tan(π / 4 + φ / 2)) / (2 * π)))
-    ];
-  }*/
   var mercator = d3.geo.mercator().scale(1).translate([0, 0]);
 
   var points = _points.map(function(pt) {
@@ -33,12 +24,13 @@ function makeFauxCartoProjection(_points)
 
   console.log('xs', xs);
 
-  var fauxCarto1d = function(ticks) {
+  var fauxCarto1d = function(ticks, size) {
     var span = ticks[ticks.length-1] - ticks[0];
     console.log('span', span);
     return function(from) {
-      if(from <= ticks[0]) return ticks[0];
-      if(from >= ticks[ticks.length-1]) return ticks[ticks.length-1];
+      if(from <= ticks[0]) return 0;
+      if(from >= ticks[ticks.length-1]) return size;
+      var fromFraction = (from - ticks[0]) / (ticks[ticks.length-1] - ticks[0]);
       var low = 0, high = ticks.length-1, test;
       while( (test = Math.floor((low+high)/2)) != low ) {
         if(ticks[test] > from)
@@ -47,15 +39,16 @@ function makeFauxCartoProjection(_points)
 	  low = test;
       }
       var binPos = (from - ticks[low]) / (ticks[high] - ticks[low]);
-      var totalPos = (low + binPos) / ticks.length;
-      var to = ticks[0] + totalPos * span;
+      var toFraction = (low + binPos) / ticks.length;
+      //var to = ticks[0] + totalPos * span;
+      //var to = totalPos * size;
       //console.log('totalPos, from, to', totalPos, from, to);
-      return fauxCartoPower * to + (1 - fauxCartoPower) * from;
+      return (fauxCartoPower * toFraction + (1 - fauxCartoPower) * fromFraction) * size;
     }
   }
 
-  var x = fauxCarto1d(xs);
-  var y = fauxCarto1d(ys);
+  var x = fauxCarto1d(xs, size[0]);
+  var y = fauxCarto1d(ys, size[1]);
 
   var fauxCartoProjection = d3.geo.projection(function(λ, φ) {
     var lon = λ * 180 / π, lat = φ * 180 / π;
@@ -65,15 +58,12 @@ function makeFauxCartoProjection(_points)
       -y(pMercator[1])
     ];
   })
-    .scale(3500)
-    .translate([1000, 700]);
+    .scale(1)
+    .translate([0, 0])
+    ;
 
   return fauxCartoProjection;
 }
-
-
-var path = d3.geo.path()
-    .projection(projection);
 
 
 var svg = d3.select("body").append("svg:svg")
@@ -103,7 +93,7 @@ var waypoints = geoclip.append("svg:g")
 });*/
 
 
-
+$(document).ready(function() {
 //d3.json("openpaths_davidstolarsky.json", function(op) {
   //console.log(op.length + " OpenPaths waypoints");
   d3.json("photos.json", function(photos) {
@@ -112,7 +102,7 @@ var waypoints = geoclip.append("svg:g")
     console.log(photos.length + " geotagged photos");
 
     // make 1d-1d-faux-cartogram projection
-    var fauxCartoProjection = makeFauxCartoProjection(photos);
+    var fauxCartoProjection = makeFauxCartoProjection(photos, [$(window).width(), $(window).height()]);
     var fauxCartoPath = d3.geo.path()
           .projection(fauxCartoProjection);
 
@@ -213,6 +203,7 @@ var waypoints = geoclip.append("svg:g")
 
   });
 //});
+}); // end $(document).ready()
 
 d3.select("select").on("change", function() {
   d3.selectAll("svg").attr("class", this.value);
