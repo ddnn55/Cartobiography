@@ -6,8 +6,6 @@ var strokeWidth = 1.0
 
 var all, scale = 1.0;
 
-
-
 function makeFauxCartoProjection(_points, size)
 {
   var mercator = d3.geo.mercator().scale(1).translate([0, 0]);
@@ -107,6 +105,15 @@ $(document).ready(function() {
       [viewportSize[0], viewportSize[1]]
     ]);
 
+   
+   var cartogram = d3.cartogram()
+    .projection(d3.geo.mercator())
+    .value(function(d) {
+      return Math.random() * 2;
+      //return 1;
+    });
+
+
     // make 1d-1d-faux-cartogram projection
     var fauxCartoProjection = makeFauxCartoProjection(photos, [$(window).width(), $(window).height()]);
     var fauxCartoPath = d3.geo.path()
@@ -188,12 +195,15 @@ $(document).ready(function() {
     var top    = Math.min.apply(null, vertices.map(function(v){return v[1];}));
     var bottom = Math.max.apply(null, vertices.map(function(v){return v[1];}));
     console.log(left, right, bottom, top);
-    var voronoi = d3.geom.voronoi(vertices);//.map(function(cell) { return viewportBounds.clip(cell); });
-    console.log(voronoi);
+    //var voronoi = d3.geom.voronoi(vertices);//.map(function(cell) { return viewportBounds.clip(cell); });
+    //var voronoi = d3.geom.delaunay(vertices);//.map(function(cell) { return viewportBounds.clip(cell); });
+    //console.log(voronoi);
+    /*
     voronoiLayer.selectAll("path")
                  .data(voronoi)
 	       .enter().append("path")
 	         .attr("d", function(d) { return "M" + d.join("L") + "Z"; });
+    */
 
     waypoints.selectAll("circle")
         .data(all)
@@ -218,6 +228,20 @@ $(document).ready(function() {
 	  d3.select('#photo-'+i+'-popover').remove();
 	})
 	;
+
+    var cartogramLayer = geoclip.append("svg:g")
+        .attr("id", "cartogram");
+    d3.json("data/us-states-segmentized.topojson", function(topology) {
+    var features = cartogram(topology, topology.objects.states.geometries).features;
+    console.log('features', features);
+    cartogramLayer.selectAll("path")
+      .data(features)
+      .enter()
+      .append("path")
+        .attr("d", cartogram.path);
+   });
+    
+
     var zoom = d3.behavior.zoom()
       .translate([-left, -top])
       //.scale(projection.scale())
