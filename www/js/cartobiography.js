@@ -106,12 +106,7 @@ $(document).ready(function() {
     ]);
 
    
-   var cartogram = d3.cartogram()
-    .projection(d3.geo.mercator())
-    .value(function(d) {
-      return Math.random() * 2;
-      //return 1;
-    });
+
 
 
     // make 1d-1d-faux-cartogram projection
@@ -228,18 +223,25 @@ $(document).ready(function() {
 	  d3.select('#photo-'+i+'-popover').remove();
 	})
 	;
-
+   
+   var cartogram = d3.cartogram()
+    .projection(d3.geo.mercator())
+    .value(function(d) {
+      return 10 + Math.random() * 2;
+      //return 1;
+    });
+    
     var cartogramLayer = geoclip.append("svg:g")
         .attr("id", "cartogram");
     d3.json("data/us-states-segmentized.topojson", function(topology) {
-    var features = cartogram(topology, topology.objects.states.geometries).features;
-    console.log('features', features);
-    cartogramLayer.selectAll("path")
-      .data(features)
-      .enter()
-      .append("path")
-        .attr("d", cartogram.path);
-   });
+      var features = cartogram(topology, topology.objects.states.geometries).features;
+      console.log('features', features);
+      cartogramLayer.selectAll("path")
+        .data(features)
+        .enter()
+        .append("path")
+          .attr("d", cartogram.path);
+    });
     
 
     var zoom = d3.behavior.zoom()
