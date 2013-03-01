@@ -23,7 +23,8 @@ fs.readFile(path, 'utf-8', function(err, str) {
   var aspect = width / height;
   //process.stderr.write('aspect', aspect);
 
-  var gridHeight = Math.floor(gridWidth / aspect);
+  var gridHeight = //Math.floor(gridWidth / aspect);
+                   gridWidth;
   //process.stderr.write('grid size', gridWidth, gridHeight);
 
   var gridLeft   = Math.floor(gridWidth * padding),
