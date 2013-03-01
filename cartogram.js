@@ -43,9 +43,12 @@ fs.readFile(path, 'utf-8', function(err, str) {
     col.push(-1);
   }
 
-  var grid = [];
+  var grid = new Array(gridWidth);
   for(var x = 0; x < gridWidth; x++) {
-    grid.push(col);
+    grid[x] = new Array(gridHeight);
+    for(var y = 0; y < gridHeight; y++) {
+      grid[x][y] = -1;
+    }
   }
   
   for(var x = gridLeft; x <= gridRight; x++) {
@@ -57,7 +60,13 @@ fs.readFile(path, 'utf-8', function(err, str) {
   photos.forEach(function(p) {
     var normalX = (p.lon - left)   / width,
         normalY = (p.lat - bottom) / height;
-    grid[Math.floor(gridLeft + normalX * internalGridWidth)][Math.floor(gridBottom + normalY * internalGridHeight)]++;
+
+    var gridX = Math.floor(gridLeft + normalX * internalGridWidth),
+        gridY = Math.floor(gridBottom + normalY * internalGridHeight);
+
+    grid[gridX][gridY] += 1.0;
+
+    process.stderr.write(grid[gridX][gridY]+'\n');
   });
 
   for(var x = 0; x < gridWidth; x++) {
@@ -68,8 +77,15 @@ fs.readFile(path, 'utf-8', function(err, str) {
   }
 
   for(var y = 0; y < gridHeight; y++) {
+    var lastValue = -1;
     for(var x = 0; x < gridWidth; x++) {
       process.stdout.write(grid[x][y] + ' ');
+      if(lastValue > -1 && lastValue != grid[x][y])
+        process.stderr.write('saw new value within this row\n');
+      //else
+      //  process.stderr.write('saw same value within this row\n');
+        
+      lastValue = grid[x][y];
     }
     process.stdout.write("\n");
   }
