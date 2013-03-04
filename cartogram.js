@@ -1,5 +1,5 @@
 var gridWidth = 1024,
-    padding = 0.2;
+    padding = 0.0;
 
 var fs = require('fs'),
     path = require('path');
@@ -28,9 +28,9 @@ fs.readFile(path, 'utf-8', function(err, str) {
   //process.stderr.write('grid size', gridWidth, gridHeight);
 
   var gridLeft   = Math.floor(gridWidth * padding),
-      gridRight  = Math.floor(gridWidth - gridWidth * padding),
+      gridRight  = Math.floor(gridWidth - 1 - gridWidth * padding),
       gridBottom = Math.floor(gridHeight * padding),
-      gridTop    = Math.floor(gridHeight - gridHeight * padding);
+      gridTop    = Math.floor(gridHeight - 1 - gridHeight * padding);
   //process.stderr.write('grid inside', gridLeft, gridRight, gridBottom, gridTop);
 
   var internalGridWidth  = gridRight - gridLeft,
@@ -54,7 +54,7 @@ fs.readFile(path, 'utf-8', function(err, str) {
   
   for(var x = gridLeft; x <= gridRight; x++) {
     for(var y = gridBottom; y <= gridTop; y++) {
-      grid[x][y] = averageDensity;
+      grid[x][y] = 0.01;
     }
   }
   
@@ -66,27 +66,18 @@ fs.readFile(path, 'utf-8', function(err, str) {
         gridY = Math.floor(gridBottom + normalY * internalGridHeight);
 
     grid[gridX][gridY] += 1.0;
-
-    process.stderr.write(grid[gridX][gridY]+'\n');
   });
 
-  for(var x = 0; x < gridWidth; x++) {
+  /*for(var x = 0; x < gridWidth; x++) {
     for(var y = 0; y < gridHeight; y++) {
       if(grid[x][y] == -1)
         grid[x][y] = 2.0 * averageDensity;
     }
-  }
+  }*/
 
   for(var y = 0; y < gridHeight; y++) {
-    var lastValue = -1;
     for(var x = 0; x < gridWidth; x++) {
       process.stdout.write(grid[x][y] + ' ');
-      if(lastValue > -1 && lastValue != grid[x][y])
-        process.stderr.write('saw new value within this row\n');
-      //else
-      //  process.stderr.write('saw same value within this row\n');
-        
-      lastValue = grid[x][y];
     }
     process.stdout.write("\n");
   }
