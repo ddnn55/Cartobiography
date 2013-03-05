@@ -41,6 +41,8 @@ function makeFauxCartoProjection(_points, size)
     }
   }
 
+  console.log('x ticks', xs.length, 'y ticks', ys.length);
+
   var x = fauxCarto1d(xs, size[0]);
   var y = fauxCarto1d(ys, size[1]);
 
