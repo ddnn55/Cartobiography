@@ -75,12 +75,25 @@ fs.readFile(path, 'utf-8', function(err, str) {
     }
   }*/
 
+  var cartogramInputString = "";
+
   for(var y = 0; y < gridHeight; y++) {
     for(var x = 0; x < gridWidth; x++) {
-      process.stdout.write(grid[x][y] + ' ');
+      cartogramInputString += (grid[x][y] + ' ');
     }
-    process.stdout.write("\n");
+    cartogramInputString += "\n";
   }
+
+  fs.writeFile(process.argv[3] + ".density_grid.dat", cartogramInputString);
+  
+  fs.writeFile(process.argv[3] + ".meta.json",
+    JSON.stringify({
+      "left" : left,
+      "right" : right,
+      "bottom" : bottom,
+      "top" : top,
+    })
+  );
 
 });
 
