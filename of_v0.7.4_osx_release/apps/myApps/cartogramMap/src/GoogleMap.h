@@ -13,6 +13,8 @@
 
 #include "Bounds.h"
 
+#include <set>
+
 class GoogleMap {
     
 public:
@@ -26,13 +28,20 @@ public:
     
 private:
     void update();
+    void ensureTilesInRange(int zoomLevel, int leftTile, int rightTile, int topTile, int bottomTile);
+    void ensureTile(int zoomLevel, int x, int y);
+    string tileKey(int zoomLevel, int x, int y);
+    string tileLatLngCenterStr(int zoomLevel, int x, int y);
+    ofVec2f tile2LatLng(int zoomLevel, float x, float y);
     
     Bounds latLngBounds;
     float pixelWidth;
     float pixelHeight;
     
     Bounds normalizedWorldBounds;
+    float zoom;
     ofImage tile;
+    map< string, ofImage > tiles;
     bool loaded = false;
     
 };
