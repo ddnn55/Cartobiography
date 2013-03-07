@@ -10,7 +10,7 @@
 
 #include <string>
 
-void GoogleMap::setLatLngBounds(const Bounds & bounds)
+void GoogleMap::setLatLngBounds(const Bounds<float> & bounds)
 {
     this->latLngBounds = bounds;
     update();
@@ -23,12 +23,12 @@ void GoogleMap::setPixelSize(float width, float height)
     update();
 }
 
-Bounds GoogleMap::latLngToNormalizedGoogleWorld(const Bounds & latLngBounds) const
+Bounds<float> GoogleMap::latLngToNormalizedGoogleWorld(const Bounds<float> & latLngBounds) const
 {
     // https://developers.google.com/maps/documentation/javascript/maptypes#MapCoordinates
     ofVec2f worldNW = googleMercator(latLngBounds.left, latLngBounds.top);
     ofVec2f worldSE = googleMercator(latLngBounds.right, latLngBounds.bottom);
-    return Bounds(worldNW.x, worldSE.x, worldNW.y, worldSE.y);
+    return Bounds<float>(worldNW.x, worldSE.x, worldNW.y, worldSE.y);
 }
 
 ofVec2f GoogleMap::googleMercator(float lng, float lat) const
@@ -59,7 +59,17 @@ void GoogleMap::update()
     float googleWorldWidth = normalizedWorldBounds.width() * 256.0;
     zoom = log(pixelWidth / googleWorldWidth) / log(2.0);
     
+    Bounds<int> tileBounds = getTileBounds();
     // which tiles do we need?
+
+    
+    ensureVisibleTiles();
+    
+    
+}
+
+Bounds<int> GoogleMap::getTileBounds()
+{
     int zoomLevel = floor(zoom);
     int tileSize = powi(2, zoomLevel);
     int leftTile   = floor(normalizedWorldBounds.left   * tileSize),
@@ -69,19 +79,20 @@ void GoogleMap::update()
     
     cout << "tiles(zoomLevel = " << zoomLevel << "): (" << leftTile << ", " << topTile << ") -- (" << rightTile << ", " << bottomTile << ")" << endl;
     
-    ensureTilesInRange(zoomLevel, leftTile, rightTile, topTile, bottomTile);
-    
-    
+    return Bounds<int>(leftTile, rightTile, topTile, bottomTile);
 }
 
-void GoogleMap::ensureTilesInRange(int zoomLevel, int leftTile, int rightTile, int topTile, int bottomTile)
+void GoogleMap::ensureVisibleTiles()
 {
+    int zoomLevel = floor(zoom);
+    Bounds<int> bounds = getTileBounds();
+    
     if(zoomLevel < 0 || zoomLevel > 30) // 30 is generous
         return;
     
-    for(int x = leftTile; x <= rightTile; x++)
+    for(int x = bounds.left; x <= bounds.right; x++)
     {
-        for(int y = topTile; y <= bottomTile; y++)
+        for(int y = bounds.top; y <= bounds.bottom; y++)
         {
             ensureTile(zoomLevel, x, y);
         }
@@ -135,6 +146,7 @@ ofVec2f GoogleMap::tile2LatLng(int zoomLevel, float x, float y)
 
 void GoogleMap::draw(float x, float y)
 {
+    
     tile.drawSubsection(
         x, y, pixelWidth, pixelHeight,
         tile.width  * normalizedWorldBounds.left,

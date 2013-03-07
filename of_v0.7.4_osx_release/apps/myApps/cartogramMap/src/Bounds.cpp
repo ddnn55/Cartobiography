@@ -8,15 +8,3 @@
 
 #include "Bounds.h"
 
-Bounds::Bounds()
-{
-    left = right = top = bottom = 0.0;
-}
-
-Bounds::Bounds(float left, float right, float top, float bottom)
-{
-    this->left = left;
-    this->right = right;
-    this->top = top;
-    this->bottom = bottom;
-}

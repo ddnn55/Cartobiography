@@ -18,27 +18,28 @@
 class GoogleMap {
     
 public:
-    void setLatLngBounds(const Bounds & bounds);
+    void setLatLngBounds(const Bounds<float> & bounds);
     void setPixelSize(float width, float height);
     
     void draw(float x, float y);
     
-    Bounds latLngToNormalizedGoogleWorld(const Bounds & latLngBounds) const;
+    Bounds<float> latLngToNormalizedGoogleWorld(const Bounds<float> & latLngBounds) const;
     ofVec2f googleMercator(float lat, float lng) const;
     
 private:
     void update();
-    void ensureTilesInRange(int zoomLevel, int leftTile, int rightTile, int topTile, int bottomTile);
+    void ensureVisibleTiles();
     void ensureTile(int zoomLevel, int x, int y);
     string tileKey(int zoomLevel, int x, int y);
     string tileLatLngCenterStr(int zoomLevel, int x, int y);
     ofVec2f tile2LatLng(int zoomLevel, float x, float y);
+    Bounds<int> getTileBounds();
     
-    Bounds latLngBounds;
+    Bounds<float> latLngBounds;
     float pixelWidth;
     float pixelHeight;
     
-    Bounds normalizedWorldBounds;
+    Bounds<float> normalizedWorldBounds;
     float zoom;
     ofImage tile;
     map< string, ofImage > tiles;
