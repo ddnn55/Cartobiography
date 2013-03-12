@@ -1,7 +1,7 @@
 var strokeWidth = 1.0
   , waypointRadius = 2.0
   , π = 3.14159265359
-  , fauxCartoPower = 0.3
+  , fauxCartoPower = 0.5
   ;
 
 var all, scale = 1.0;

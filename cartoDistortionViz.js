@@ -1,4 +1,4 @@
-var step = 5;
+var step = 1;
 var gridSize = 1025;
 var padding = 0.0;
 
