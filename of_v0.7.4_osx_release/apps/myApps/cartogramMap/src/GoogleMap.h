@@ -19,7 +19,7 @@ class GoogleMap {
     
 public:
     void setLatLngBounds(const Bounds<float> & bounds);
-    void setPixelSize(float width, float height);
+    void setScreenBounds(Bounds<float> screenBounds);
     
     void draw(float x, float y);
     
@@ -34,10 +34,12 @@ private:
     string tileLatLngCenterStr(int zoomLevel, int x, int y);
     ofVec2f tile2LatLng(int zoomLevel, float x, float y);
     Bounds<int> getTileBounds();
+    int zoomLevel() { return floor(zoom); }
+    int tileSize() { return 1 << zoomLevel(); }
     
     Bounds<float> latLngBounds;
-    float pixelWidth;
-    float pixelHeight;
+    
+    Bounds<float> screenBounds;
     
     Bounds<float> normalizedWorldBounds;
     float zoom;

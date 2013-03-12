@@ -6,6 +6,8 @@
 //
 //
 
+#include "CBDebug.h"
+
 #include "GoogleMap.h"
 
 #include <string>
@@ -16,10 +18,11 @@ void GoogleMap::setLatLngBounds(const Bounds<float> & bounds)
     update();
 }
 
-void GoogleMap::setPixelSize(float width, float height)
+void GoogleMap::setScreenBounds(Bounds<float> screenBounds)
 {
-    pixelWidth = width;
-    pixelHeight = height;
+    //pixelWidth = width;
+    //pixelHeight = height;
+    this->screenBounds = screenBounds;
     update();
 }
 
@@ -57,14 +60,13 @@ void GoogleMap::update()
     normalizedWorldBounds = latLngToNormalizedGoogleWorld(latLngBounds);
     
     float googleWorldWidth = normalizedWorldBounds.width() * 256.0;
-    zoom = log(pixelWidth / googleWorldWidth) / log(2.0);
+    zoom = log(screenBounds.width() / googleWorldWidth) / log(2.0);
     
     Bounds<int> tileBounds = getTileBounds();
     // which tiles do we need?
 
     
     ensureVisibleTiles();
-    
     
 }
 
@@ -76,8 +78,6 @@ Bounds<int> GoogleMap::getTileBounds()
         rightTile  = floor(normalizedWorldBounds.right  * tileSize),
         topTile    = floor(normalizedWorldBounds.top    * tileSize),
         bottomTile = floor(normalizedWorldBounds.bottom * tileSize);
-    
-    cout << "tiles(zoomLevel = " << zoomLevel << "): (" << leftTile << ", " << topTile << ") -- (" << rightTile << ", " << bottomTile << ")" << endl;
     
     return Bounds<int>(leftTile, rightTile, topTile, bottomTile);
 }
@@ -146,12 +146,41 @@ ofVec2f GoogleMap::tile2LatLng(int zoomLevel, float x, float y)
 
 void GoogleMap::draw(float x, float y)
 {
-    
-    tile.drawSubsection(
-        x, y, pixelWidth, pixelHeight,
+    /*tile.drawSubsection(
+        x, y, screenBounds.width(), screenBounds.height(),
         tile.width  * normalizedWorldBounds.left,
         tile.height * (1.0 - normalizedWorldBounds.top),
         tile.width  * normalizedWorldBounds.width(),
         tile.height * normalizedWorldBounds.height()
-    );
+    );*/
+    
+    Bounds<int> tileBounds = getTileBounds();
+    for(int googleTileCol = tileBounds.left; googleTileCol <= tileBounds.right; googleTileCol++)
+    {
+        for(int googleTileRow = tileBounds.top; googleTileRow <= tileBounds.bottom; googleTileRow++)
+        {
+            int localTileCol = googleTileCol - tileBounds.left,
+                localTileRow = googleTileRow - tileBounds.top;
+            
+            ofImage* tile = & tiles[tileKey(zoomLevel(), googleTileCol, googleTileRow)];
+            
+            Bounds<float> crop = Bounds<float>(*tile);
+            Bounds<float> viewport;
+            viewport.left   = screenBounds.left + screenBounds.width() * float(localTileCol) / float(tileBounds.width() + 1);
+            viewport.right  = viewport.left + (localTileCol + 1) * screenBounds.width() / float(tileBounds.width() + 1);
+            viewport.top    = screenBounds.top - screenBounds.height() * float(localTileRow) / float(tileBounds.height() + 1);
+            viewport.bottom = viewport.top - (localTileRow + 1) * screenBounds.height() / float(tileBounds.height() + 1);
+            
+            //if(tileCol < normalizedWorldBounds.left * tileSize())
+            //    asdfasdfasdfsa
+            
+            tile->drawSubsection(
+                viewport.left, viewport.bottom, viewport.width(), viewport.height(),
+                crop.left, crop.bottom, crop.width(), crop.height()
+            );
+            
+            CBLog(viewport.toString());
+        }
+    }
+    CBLog("--------------");
 }
