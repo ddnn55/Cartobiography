@@ -10,13 +10,17 @@
 
 #include <ofMain.h>
 
+//#include "CBDebug.h"
+
 #include "DistortedMap.h"
 
 DistortedMap::DistortedMap(Bounds<float> bounds, std::string filename)
 {
+    ofSetLogLevel(OF_LOG_VERBOSE);
+    
     gMap = GoogleMap(5, bounds);
     
-    ofFile file(filename);
+    /*ofFile file(filename);
     ofBuffer contents = file.readToBuffer();
     std::string line;
     
@@ -41,14 +45,37 @@ DistortedMap::DistortedMap(Bounds<float> bounds, std::string filename)
         }
     }
     
-    
     map.allocate(CARTOGRAM_GRID_SIZE+1, CARTOGRAM_GRID_SIZE+1, GL_RGB32F);
     map.loadData(data, (CARTOGRAM_GRID_SIZE+1), (CARTOGRAM_GRID_SIZE+1), GL_RGB);
     
-    delete[] data;
+    delete[] data;*/
+    
+    shaderLoaded = false;
 }
 
 void DistortedMap::draw(float x, float y)
-{
-    gMap.draw(0, 0);
+{    
+    if(!shaderLoaded)
+    {
+        distortionShader.load("Distortion");
+        shaderLoaded = true;
+    }
+    
+    distortionShader.begin();
+        glBegin(GL_QUADS);
+    
+            glTexCoord2f(0.0, 0.0);
+            glVertex2f(0.0, 0.0);
+    
+            glTexCoord2f(1.0, 0.0);
+            glVertex2f(1280.0, 0.0);
+    
+            glTexCoord2f(1.0, 1.0);
+            glVertex2f(1280.0, 720.0);
+    
+            glTexCoord2f(0.0, 1.0);
+            glVertex2f(0.0, 720.0);
+    
+        glEnd();
+    distortionShader.end();
 }

@@ -25,6 +25,9 @@ public:
 private:
     ofTexture map;
     GoogleMap gMap;
+    
+    ofShader distortionShader;
+    bool shaderLoaded;
 };
 
 #endif /* defined(__emptyExample__DistortedMap__) */
