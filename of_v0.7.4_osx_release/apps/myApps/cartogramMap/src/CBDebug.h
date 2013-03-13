@@ -12,9 +12,28 @@
 #include <string>
 #include <iostream>
 
+#include <ofMain.h>
+
+#include "Bounds.h"
+
 void CBLog(std::string msg)
 {
     std::cerr << msg << std::endl;
+}
+
+void CBLog(ofVec2f vec)
+{
+    stringstream ss;
+    ss << "ofVec2f(" << vec.x << "," << vec.y << ")";
+    CBLog(ss.str());
+}
+
+template <class T>
+void CBLog(Bounds<T> bounds)
+{
+    stringstream ss;
+    ss << "Bounds(" << bounds.left << "," << bounds.right << ", " << bounds.top << ", " << bounds.bottom << ")";
+    CBLog(ss.str());
 }
 
 #endif

@@ -18,13 +18,16 @@
 class GoogleMap {
     
 public:
+    GoogleMap() {};
+    GoogleMap(int zoomLevel, Bounds<float> latLngBounds);
+    
     void setLatLngBounds(const Bounds<float> & bounds);
     void setScreenBounds(Bounds<float> screenBounds);
     
     void draw(float x, float y);
     
-    Bounds<float> latLngToNormalizedGoogleWorld(const Bounds<float> & latLngBounds) const;
-    ofVec2f googleMercator(float lat, float lng) const;
+    //Bounds<float> latLngToNormalizedGoogleWorld(const Bounds<float> & latLngBounds) const;
+    //ofVec2f googleMercator(float lat, float lng) const;
     
 private:
     void update();
@@ -34,8 +37,9 @@ private:
     string tileLatLngCenterStr(int zoomLevel, int x, int y);
     ofVec2f tile2LatLng(int zoomLevel, float x, float y);
     Bounds<int> getTileBounds();
-    int zoomLevel() { return floor(zoom); }
-    int tileSize() { return 1 << zoomLevel(); }
+    
+    //int zoomLevel() { return floor(zoom); }
+    //int tileSize() { return 1 << zoomLevel(); }
     
     Bounds<float> latLngBounds;
     
@@ -47,6 +51,19 @@ private:
     map< string, ofImage > tiles;
     bool loaded = false;
     
+    // new strategy
+    
+    int zoomLevel;
+    ofImage map;
+    
+    void setGoogleZoomLevel(unsigned char zoomLevel) { this->zoomLevel = zoomLevel; };
+    ofImage makeMap();
+    
+    Bounds<float> latLngToGooglePixel(const Bounds<float> & latLngBounds) const;
+    ofVec2f latLngToGooglePixel(ofVec2f latLng) const;
+    ofVec2f googlePixelToNormalizedGoogleWorld(ofVec2f googlePixel) const;
+    ofVec2f googlePixelToLatLng(ofVec2f googlePixel) const;
+    ofVec2f googleMercator(ofVec2f latLng) const;
 };
 
 #endif /* defined(__emptyExample__GoogleMap__) */

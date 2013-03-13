@@ -11,8 +11,10 @@ void testApp::setup(){
         bottom = 20.627166666666668,
            top = 52.312333333333335;
     
-    gMap.setLatLngBounds(Bounds<float>(left, right, top, bottom));
-    gMap.setScreenBounds(Bounds<float>(256, 1024+256, 768, 256));
+    //gMap.setLatLngBounds(Bounds<float>(left, right, top, bottom));
+    //gMap.setScreenBounds(Bounds<float>(256, 1024+256, 768, 256));
+    
+    gMap = GoogleMap(5, Bounds<float>(left, right, top, bottom));
     
     distortion.load("/Users/dstolarsky3/Desktop/Cartobiography/photos_cart.dat");
 }
