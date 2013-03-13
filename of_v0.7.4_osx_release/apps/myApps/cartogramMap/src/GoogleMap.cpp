@@ -114,8 +114,21 @@ ofImage GoogleMap::makeMap()
             ofVec2f googlePixelTileCenter(googlePixelBounds.left + tilePixelCenterX, googlePixelBounds.bottom + tilePixelCenterY);
             ofVec2f tileCenterLatLng = googlePixelToLatLng(googlePixelTileCenter);
             
-            // TODO draw the tile into map
             CBLog(tileCenterLatLng);
+            
+            // draw tile into map
+            stringstream urlStream;
+            urlStream << "http://maps.googleapis.com/maps/api/staticmap?";
+            urlStream << "center=" << tileCenterLatLng.y << "," << tileCenterLatLng.x;
+            urlStream << "&zoom=" << zoomLevel;
+            urlStream << "&scale=1&size=512x512&sensor=false";
+            CBLog(urlStream.str());
+            
+            ofHttpResponse response = ofLoadURL(urlStream.str());
+            ofImage tile;
+            tile.loadImage(response.data);
+            
+            //pasteImage(tile, map, tilePixelCenterX - 256, tilePixelCenterY - 256);
         }
     }
     
@@ -200,8 +213,12 @@ ofVec2f GoogleMap::googlePixelToLatLng(ofVec2f googlePixel) const
 {
     ofVec2f normalizedGoogleWorld(googlePixelToNormalizedGoogleWorld(googlePixel));
     
+    float y = 0.5 - normalizedGoogleWorld.y;
+    
+    float lat = -1.0 * (180.0 / PI) * (2 * atan(exp(2.0 * PI * y)) - PI / 2);
+    
     float lng = -180.0 + 360.0 * normalizedGoogleWorld.x;
-    float lat = 2.0 * ( (180.0 / PI) * atan( pow( 10.0, /*2.0 * */ PI * ( normalizedGoogleWorld.y - 0.5 ) ) ) - 45.0 );
+    //float lat = 2.0 * ( (180.0 / PI) * atan( pow( 10.0, 2.0 * PI * ( normalizedGoogleWorld.y - 0.5 ) ) ) - 45.0 );
     
     return ofVec2f(lng, lat);
 }
