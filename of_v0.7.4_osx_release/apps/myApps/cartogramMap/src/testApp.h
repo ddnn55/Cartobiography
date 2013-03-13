@@ -2,13 +2,12 @@
 
 #include "ofMain.h"
 
-#include "DistortionMap.h"
+#include "DistortedMap.h"
 #include "GoogleMap.h"
 
 class testApp : public ofBaseApp{
     
-    GoogleMap gMap;
-    DistortionMap distortion;
+    DistortedMap myMap;
     
 	public:
 		void setup();

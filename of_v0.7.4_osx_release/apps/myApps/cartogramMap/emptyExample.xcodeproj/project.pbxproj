@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1312554616E6AF9600338F15 /* DistortionMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1312554416E6AF9600338F15 /* DistortionMap.cpp */; };
+		1312554616E6AF9600338F15 /* DistortedMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1312554416E6AF9600338F15 /* DistortedMap.cpp */; };
 		1312554916E6C11400338F15 /* GoogleMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1312554716E6C11400338F15 /* GoogleMap.cpp */; };
 		1312554C16E81C9A00338F15 /* Bounds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1312554A16E81C9A00338F15 /* Bounds.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
@@ -63,8 +63,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1312554416E6AF9600338F15 /* DistortionMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistortionMap.cpp; sourceTree = "<group>"; };
-		1312554516E6AF9600338F15 /* DistortionMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistortionMap.h; sourceTree = "<group>"; };
+		1312554416E6AF9600338F15 /* DistortedMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistortedMap.cpp; sourceTree = "<group>"; };
+		1312554516E6AF9600338F15 /* DistortedMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistortedMap.h; sourceTree = "<group>"; };
 		1312554716E6C11400338F15 /* GoogleMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GoogleMap.cpp; sourceTree = "<group>"; };
 		1312554816E6C11400338F15 /* GoogleMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleMap.h; sourceTree = "<group>"; };
 		1312554A16E81C9A00338F15 /* Bounds.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Bounds.cpp; sourceTree = "<group>"; };
@@ -197,8 +197,8 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
-				1312554416E6AF9600338F15 /* DistortionMap.cpp */,
-				1312554516E6AF9600338F15 /* DistortionMap.h */,
+				1312554416E6AF9600338F15 /* DistortedMap.cpp */,
+				1312554516E6AF9600338F15 /* DistortedMap.h */,
 				1312554716E6C11400338F15 /* GoogleMap.cpp */,
 				1312554816E6C11400338F15 /* GoogleMap.h */,
 				1312554A16E81C9A00338F15 /* Bounds.cpp */,
@@ -303,7 +303,7 @@
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */,
-				1312554616E6AF9600338F15 /* DistortionMap.cpp in Sources */,
+				1312554616E6AF9600338F15 /* DistortedMap.cpp in Sources */,
 				1312554916E6C11400338F15 /* GoogleMap.cpp in Sources */,
 				1312554C16E81C9A00338F15 /* Bounds.cpp in Sources */,
 			);

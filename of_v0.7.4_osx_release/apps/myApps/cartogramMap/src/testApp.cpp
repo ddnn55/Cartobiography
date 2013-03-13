@@ -6,17 +6,14 @@ void testApp::setup(){
     ofSetWindowPosition(0, 0);
     ofSetWindowShape(ofGetScreenWidth(), ofGetScreenHeight());
     
-    float left = -88.298,
-         right = 35.498,
-        bottom = 20.627166666666668,
-           top = 52.312333333333335;
     
-    //gMap.setLatLngBounds(Bounds<float>(left, right, top, bottom));
-    //gMap.setScreenBounds(Bounds<float>(256, 1024+256, 768, 256));
+    Bounds<float> latLngBounds;
+    latLngBounds.left   = -88.298;
+    latLngBounds.right  = 35.498;
+    latLngBounds.bottom = 20.627166666666668;
+    latLngBounds.top    = 52.312333333333335;
     
-    gMap = GoogleMap(5, Bounds<float>(left, right, top, bottom));
-    
-    distortion.load("/Users/dstolarsky3/Desktop/Cartobiography/photos_cart.dat");
+    myMap = DistortedMap(latLngBounds, "/Users/dstolarsky3/Desktop/Cartobiography/photos_cart.dat");
 }
 
 //--------------------------------------------------------------
@@ -26,8 +23,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-    distortion.map.draw(400, 0);
-    gMap.draw(0, 0);
+    myMap.draw(0, 0);
 }
 
 //--------------------------------------------------------------
