@@ -18,16 +18,18 @@
 class DistortedMap {
 public:
     DistortedMap() {};
-    DistortedMap(Bounds<float> bounds, std::string filename);
+    void load(Bounds<float> bounds, std::string filename);
     
     void draw(float x, float y);
     
 private:
-    ofTexture map;
+    ofTexture distortion;
     GoogleMap gMap;
     
-    ofShader distortionShader;
-    bool shaderLoaded;
+    ofShader shader;
+    
+    //ofShader distortionShader;
+    //bool shaderLoaded;
 };
 
 #endif /* defined(__emptyExample__DistortedMap__) */

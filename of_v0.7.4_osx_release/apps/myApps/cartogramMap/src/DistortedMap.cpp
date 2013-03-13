@@ -10,17 +10,24 @@
 
 #include <ofMain.h>
 
-//#include "CBDebug.h"
-
 #include "DistortedMap.h"
 
-DistortedMap::DistortedMap(Bounds<float> bounds, std::string filename)
+
+void DistortedMap::load(Bounds<float> bounds, std::string filename)
 {
     ofSetLogLevel(OF_LOG_VERBOSE);
     
-    gMap = GoogleMap(5, bounds);
+    //ofBackground(0,0,0);
+    ofDisableArbTex();
+    ofEnableAlphaBlending();
+    ofSetFrameRate(60);
+    glEnable(GL_DEPTH_TEST);
+        
+    shader.load("shaders/distort.vert", "shaders/distort.frag");
     
-    /*ofFile file(filename);
+    gMap.load(4, bounds);
+    
+    ofFile file(filename);
     ofBuffer contents = file.readToBuffer();
     std::string line;
     
@@ -45,37 +52,39 @@ DistortedMap::DistortedMap(Bounds<float> bounds, std::string filename)
         }
     }
     
-    map.allocate(CARTOGRAM_GRID_SIZE+1, CARTOGRAM_GRID_SIZE+1, GL_RGB32F);
-    map.loadData(data, (CARTOGRAM_GRID_SIZE+1), (CARTOGRAM_GRID_SIZE+1), GL_RGB);
+    distortion.allocate(CARTOGRAM_GRID_SIZE+1, CARTOGRAM_GRID_SIZE+1, GL_RGB32F);
+    distortion.loadData(data, (CARTOGRAM_GRID_SIZE+1), (CARTOGRAM_GRID_SIZE+1), GL_RGB);
     
-    delete[] data;*/
-    
-    shaderLoaded = false;
+    delete[] data;
 }
 
 void DistortedMap::draw(float x, float y)
-{    
-    if(!shaderLoaded)
-    {
-        distortionShader.load("Distortion");
-        shaderLoaded = true;
-    }
+{
+    ofSetColor(255);
     
-    distortionShader.begin();
+    /**************  start working code  **************/
+    shader.begin();
+    shader.setUniformTexture("colormap", gMap.map, 0);
+    shader.setUniformTexture("distortion", distortion, 1);
+    //shader.setUniform1i("maxHeight",ofGetMouseX());
+    
+    ofPoint se = gMap.map.getTextureReference().getCoordFromPercent(1, 1);
+    
         glBegin(GL_QUADS);
-    
-            glTexCoord2f(0.0, 0.0);
+
+            glMultiTexCoord2f(GL_TEXTURE0, 0.0, 0.0);
             glVertex2f(0.0, 0.0);
-    
-            glTexCoord2f(1.0, 0.0);
-            glVertex2f(1280.0, 0.0);
-    
-            glTexCoord2f(1.0, 1.0);
-            glVertex2f(1280.0, 720.0);
-    
-            glTexCoord2f(0.0, 1.0);
-            glVertex2f(0.0, 720.0);
+            
+            glMultiTexCoord2f(GL_TEXTURE0, se.x, 0.0);
+            glVertex2f(1024.0, 0.0);
+            
+            glMultiTexCoord2f(GL_TEXTURE0, se.x, se.y);
+            glVertex2f(1024.0, 1024.0);
+            
+            glMultiTexCoord2f(GL_TEXTURE0, 0.0, se.y);
+            glVertex2f(0.0, 1024.0);
     
         glEnd();
-    distortionShader.end();
+    
+    shader.end();
 }

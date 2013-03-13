@@ -26,13 +26,6 @@ void GoogleMap::setScreenBounds(Bounds<float> screenBounds)
     update();
 }
 
-/*Bounds<float> GoogleMap::latLngToNormalizedGoogleWorld(const Bounds<float> & latLngBounds) const
-{
-    ofVec2f worldNW = googleMercator(latLngBounds.left, latLngBounds.top);
-    ofVec2f worldSE = googleMercator(latLngBounds.right, latLngBounds.bottom);
-    return Bounds<float>(worldNW.x, worldSE.x, worldNW.y, worldSE.y);
-}*/
-
 Bounds<float> GoogleMap::latLngToGooglePixel(const Bounds<float> & latLngBounds) const
 {
     ofVec2f googleWorldPixelNW = latLngToGooglePixel(ofVec2f(latLngBounds.left, latLngBounds.top));
@@ -66,35 +59,16 @@ ofVec2f GoogleMap::googleMercator(ofVec2f latLng) const
 
 void GoogleMap::update()
 {
-    /*if(!loaded)
-    {
-        ofHttpResponse response = ofLoadURL("http://maps.googleapis.com/maps/api/staticmap?center=0,0&zoom=1&scale=2&size=512x512&sensor=false");
-        tile.loadImage(response.data);
-        loaded = true;
-    }
-    
-    normalizedWorldBounds = latLngToNormalizedGoogleWorld(latLngBounds);
-    
-    float googleWorldWidth = normalizedWorldBounds.width() * 256.0;
-    zoom = log(screenBounds.width() / googleWorldWidth) / log(2.0);
-    
-    Bounds<int> tileBounds = getTileBounds();
-    // which tiles do we need?
-
-    
-    ensureVisibleTiles();*/
-    
-    
-    // new strategy
-    //map = makeMap();
     
 }
 
-GoogleMap::GoogleMap(int zoomLevel, Bounds<float> latLngBounds)
+void GoogleMap::load(int zoomLevel, Bounds<float> latLngBounds)
 {
     this->zoomLevel = zoomLevel;
     this->latLngBounds = latLngBounds;
     this->map = makeMap();
+    this->map.setUseTexture(true);
+    this->map.update();
 }
 
 void pasteImage(ofImage & from, ofImage & to, int toX, int toY)
@@ -136,7 +110,8 @@ ofImage GoogleMap::makeMap()
             urlStream << "&scale=1&size=512x512&sensor=false";
             CBLog(urlStream.str());
             
-            ofHttpResponse response = ofLoadURL(urlStream.str());
+            //ofHttpResponse response = ofLoadURL(urlStream.str()); // FIXME google rate limiting... 
+            ofHttpResponse response = ofLoadURL("http://www.cs.arizona.edu/solar/solar.512.512.gif");
             ofImage tile;
             tile.loadImage(response.data);
             
@@ -159,41 +134,41 @@ Bounds<int> GoogleMap::getTileBounds()
     return Bounds<int>(leftTile, rightTile, topTile, bottomTile);
 }
 
-void GoogleMap::ensureVisibleTiles()
-{
-    int zoomLevel = floor(zoom);
-    Bounds<int> bounds = getTileBounds();
-    
-    if(zoomLevel < 0 || zoomLevel > 30) // 30 is generous
-        return;
-    
-    for(int x = bounds.left; x <= bounds.right; x++)
-    {
-        for(int y = bounds.top; y <= bounds.bottom; y++)
-        {
-            ensureTile(zoomLevel, x, y);
-        }
-    }
-}
-
-void GoogleMap::ensureTile(int zoomLevel, int x, int y)
-{
-    if(tiles.find(tileKey(zoomLevel, x, y)) == tiles.end())
-    {
-        stringstream urlStream;
-        urlStream << "http://maps.googleapis.com/maps/api/staticmap?";
-        urlStream << "center=" << tileLatLngCenterStr(zoomLevel, x, y);
-        urlStream << "&zoom=" << zoomLevel;
-        urlStream << "&scale=2&size=512x512&sensor=false";
-        
-        ofHttpResponse response = ofLoadURL(urlStream.str());
-        ofImage tile;
-        tile.loadImage(response.data);
-        tiles[tileKey(zoomLevel, x, y)] = tile;
-        
-        cout << "downloaded " << urlStream.str() << endl;
-    }
-}
+//void GoogleMap::ensureVisibleTiles()
+//{
+//    int zoomLevel = floor(zoom);
+//    Bounds<int> bounds = getTileBounds();
+//    
+//    if(zoomLevel < 0 || zoomLevel > 30) // 30 is generous
+//        return;
+//    
+//    for(int x = bounds.left; x <= bounds.right; x++)
+//    {
+//        for(int y = bounds.top; y <= bounds.bottom; y++)
+//        {
+//            ensureTile(zoomLevel, x, y);
+//        }
+//    }
+//}
+//
+//void GoogleMap::ensureTile(int zoomLevel, int x, int y)
+//{
+//    if(tiles.find(tileKey(zoomLevel, x, y)) == tiles.end())
+//    {
+//        stringstream urlStream;
+//        urlStream << "http://maps.googleapis.com/maps/api/staticmap?";
+//        urlStream << "center=" << tileLatLngCenterStr(zoomLevel, x, y);
+//        urlStream << "&zoom=" << zoomLevel;
+//        urlStream << "&scale=2&size=512x512&sensor=false";
+//        
+//        ofHttpResponse response = ofLoadURL(urlStream.str());
+//        ofImage tile;
+//        tile.loadImage(response.data);
+//        tiles[tileKey(zoomLevel, x, y)] = tile;
+//        
+//        cout << "downloaded " << urlStream.str() << endl;
+//    }
+//}
 
 string GoogleMap::tileKey(int zoomLevel, int x, int y)
 {

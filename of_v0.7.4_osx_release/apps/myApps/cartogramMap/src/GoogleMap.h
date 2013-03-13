@@ -19,7 +19,7 @@ class GoogleMap {
     
 public:
     GoogleMap() {};
-    GoogleMap(int zoomLevel, Bounds<float> latLngBounds);
+    void load(int zoomLevel, Bounds<float> latLngBounds);
     
     void setLatLngBounds(const Bounds<float> & bounds);
     void setScreenBounds(Bounds<float> screenBounds);
@@ -29,10 +29,12 @@ public:
     //Bounds<float> latLngToNormalizedGoogleWorld(const Bounds<float> & latLngBounds) const;
     //ofVec2f googleMercator(float lat, float lng) const;
     
+    ofImage map;
+    
 private:
     void update();
-    void ensureVisibleTiles();
-    void ensureTile(int zoomLevel, int x, int y);
+    //void ensureVisibleTiles();
+    //void ensureTile(int zoomLevel, int x, int y);
     string tileKey(int zoomLevel, int x, int y);
     string tileLatLngCenterStr(int zoomLevel, int x, int y);
     ofVec2f tile2LatLng(int zoomLevel, float x, float y);
@@ -48,13 +50,13 @@ private:
     Bounds<float> normalizedWorldBounds;
     float zoom;
     ofImage tile;
-    map< string, ofImage > tiles;
+    //map< string, ofImage > tiles;
     bool loaded = false;
     
     // new strategy
     
     int zoomLevel;
-    ofImage map;
+    
     
     void setGoogleZoomLevel(unsigned char zoomLevel) { this->zoomLevel = zoomLevel; };
     ofImage makeMap();

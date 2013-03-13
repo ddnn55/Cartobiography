@@ -10,7 +10,6 @@
 		1312554616E6AF9600338F15 /* DistortedMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1312554416E6AF9600338F15 /* DistortedMap.cpp */; };
 		1312554916E6C11400338F15 /* GoogleMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1312554716E6C11400338F15 /* GoogleMap.cpp */; };
 		1312554C16E81C9A00338F15 /* Bounds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1312554A16E81C9A00338F15 /* Bounds.cpp */; };
-		1312555416F0FAA400338F15 /* Distortion.vert in Sources */ = {isa = PBXBuildFile; fileRef = 1312555316F0FAA400338F15 /* Distortion.vert */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -71,8 +70,8 @@
 		1312554A16E81C9A00338F15 /* Bounds.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Bounds.cpp; sourceTree = "<group>"; };
 		1312554B16E81C9A00338F15 /* Bounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bounds.h; sourceTree = "<group>"; };
 		1312554E16EFC2F600338F15 /* CBDebug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CBDebug.h; sourceTree = "<group>"; };
-		1312555316F0FAA400338F15 /* Distortion.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Distortion.vert; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
-		1312555516F0FAB300338F15 /* Distortion.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = Distortion.frag; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
+		1312556116F13CDB00338F15 /* distort.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = distort.frag; sourceTree = "<group>"; };
+		1312556216F13CDB00338F15 /* distort.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = distort.vert; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -138,10 +137,18 @@
 		1312555016F0FA7200338F15 /* data */ = {
 			isa = PBXGroup;
 			children = (
-				1312555316F0FAA400338F15 /* Distortion.vert */,
-				1312555516F0FAB300338F15 /* Distortion.frag */,
+				1312556016F13CDB00338F15 /* shaders */,
 			);
 			path = data;
+			sourceTree = "<group>";
+		};
+		1312556016F13CDB00338F15 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				1312556116F13CDB00338F15 /* distort.frag */,
+				1312556216F13CDB00338F15 /* distort.vert */,
+			);
+			path = shaders;
 			sourceTree = "<group>";
 		};
 		BB4B014C10F69532006C3DED /* addons */ = {
@@ -327,7 +334,6 @@
 				1312554616E6AF9600338F15 /* DistortedMap.cpp in Sources */,
 				1312554916E6C11400338F15 /* GoogleMap.cpp in Sources */,
 				1312554C16E81C9A00338F15 /* Bounds.cpp in Sources */,
-				1312555416F0FAA400338F15 /* Distortion.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

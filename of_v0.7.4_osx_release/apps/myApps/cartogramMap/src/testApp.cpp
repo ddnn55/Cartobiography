@@ -13,7 +13,7 @@ void testApp::setup(){
     latLngBounds.bottom = 20.627166666666668;
     latLngBounds.top    = 52.312333333333335;
     
-    myMap = DistortedMap(latLngBounds, "/Users/dstolarsky3/Desktop/Cartobiography/photos_cart.dat");
+    myMap.load(latLngBounds, "/Users/dstolarsky3/Desktop/Cartobiography/photos_cart.dat");
 }
 
 //--------------------------------------------------------------
