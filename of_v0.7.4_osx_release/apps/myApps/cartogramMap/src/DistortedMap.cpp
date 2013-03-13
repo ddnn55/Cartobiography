@@ -68,20 +68,25 @@ void DistortedMap::draw(float x, float y)
     shader.setUniformTexture("distortion", distortion, 1);
     //shader.setUniform1i("maxHeight",ofGetMouseX());
     
-    ofPoint se = gMap.map.getTextureReference().getCoordFromPercent(1, 1);
+    ofPoint mapSE = gMap.map.getTextureReference().getCoordFromPercent(1, 1);
+    ofPoint distortionSE = distortion.getCoordFromPercent(1, 1);
     
         glBegin(GL_QUADS);
 
             glMultiTexCoord2f(GL_TEXTURE0, 0.0, 0.0);
+            glMultiTexCoord2f(GL_TEXTURE1, 0.0, 0.0);
             glVertex2f(0.0, 0.0);
             
-            glMultiTexCoord2f(GL_TEXTURE0, se.x, 0.0);
+            glMultiTexCoord2f(GL_TEXTURE0, mapSE.x, 0.0);
+            glMultiTexCoord2f(GL_TEXTURE1, distortionSE.x, 0.0);
             glVertex2f(1024.0, 0.0);
             
-            glMultiTexCoord2f(GL_TEXTURE0, se.x, se.y);
+            glMultiTexCoord2f(GL_TEXTURE0, mapSE.x, mapSE.y);
+            glMultiTexCoord2f(GL_TEXTURE1, distortionSE.x, distortionSE.y);
             glVertex2f(1024.0, 1024.0);
-            
-            glMultiTexCoord2f(GL_TEXTURE0, 0.0, se.y);
+    
+            glMultiTexCoord2f(GL_TEXTURE0, 0.0, mapSE.y);
+            glMultiTexCoord2f(GL_TEXTURE1, 0.0, distortionSE.y);
             glVertex2f(0.0, 1024.0);
     
         glEnd();
