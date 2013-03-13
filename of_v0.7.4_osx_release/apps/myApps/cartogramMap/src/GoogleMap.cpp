@@ -97,6 +97,18 @@ GoogleMap::GoogleMap(int zoomLevel, Bounds<float> latLngBounds)
     this->map = makeMap();
 }
 
+void pasteImage(ofImage & from, ofImage & to, int toX, int toY)
+{
+    for(int y = 0; y < from.height; y++)
+    {
+        for(int x = 0; x < from.width; x++)
+        {
+            if((toX + x >= 0) && (toY + y >= 0) && (toX + x < to.width) && (toY + y < to.height))
+                to.setColor(toX + x, toY + y, from.getColor(x, y));
+        }
+    }
+}
+
 ofImage GoogleMap::makeMap()
 {
     CBLog(latLngBounds);
@@ -128,7 +140,7 @@ ofImage GoogleMap::makeMap()
             ofImage tile;
             tile.loadImage(response.data);
             
-            //pasteImage(tile, map, tilePixelCenterX - 256, tilePixelCenterY - 256);
+            pasteImage(tile, map, tilePixelCenterX - 256, map.height - tilePixelCenterY - 256);
         }
     }
     
@@ -273,6 +285,8 @@ void GoogleMap::draw(float x, float y)
 //        }
 //    }
 //    CBLog("--------------");
+    
+    map.draw(32, 32, ofGetWidth() - 64, (ofGetWidth() - 64) * map.height / map.width);
     
     ofSetLineWidth(3.0);
     ofLine(screenBounds.left, screenBounds.top, screenBounds.right, screenBounds.top);
