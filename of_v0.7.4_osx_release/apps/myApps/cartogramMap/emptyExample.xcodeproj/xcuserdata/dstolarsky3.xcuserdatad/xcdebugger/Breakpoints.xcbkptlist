@@ -225,37 +225,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/DistortedMap.cpp"
-         timestampString = "384917194.651791"
+         timestampString = "384975779.478969"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "126"
-         endingLineNumber = "126"
-         landmarkName = "DistortedMap::draw(float x, float y)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/DistortedMap.cpp"
-         timestampString = "384917194.651791"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "108"
-         endingLineNumber = "108"
-         landmarkName = "DistortedMap::draw(float x, float y)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/DistortedMap.cpp"
-         timestampString = "384914441.74298"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "87"
-         endingLineNumber = "87"
+         startingLineNumber = "85"
+         endingLineNumber = "85"
          landmarkName = "DistortedMap::load(Bounds&lt;float&gt; bounds, std::string filename)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -264,11 +238,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/DistortedMap.cpp"
-         timestampString = "384914466.707097"
+         timestampString = "384975779.478969"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "64"
-         endingLineNumber = "64"
+         startingLineNumber = "63"
+         endingLineNumber = "63"
          landmarkName = "DistortedMap::load(Bounds&lt;float&gt; bounds, std::string filename)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -277,11 +251,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/DistortedMap.cpp"
-         timestampString = "384915561.20437"
+         timestampString = "384975779.478969"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "103"
-         endingLineNumber = "103"
+         startingLineNumber = "101"
+         endingLineNumber = "101"
          landmarkName = "DistortedMap::draw(float x, float y)"
          landmarkType = "5">
       </FileBreakpoint>

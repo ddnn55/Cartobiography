@@ -25,7 +25,7 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
         
     shader.load("shaders/distort.vert", "shaders/distort.frag");
     
-    gMap.load(4, bounds);
+    gMap.load(5, bounds);
     
     ofFile file(filename);
     ofBuffer contents = file.readToBuffer();
@@ -59,7 +59,6 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
     
     
     ofPoint distortionSE = distortion.getCoordFromPercent(1, 1);
-    //mesh.enableTextures();
     
     for(int y = 0; y < CARTOGRAM_GRID_SIZE+1; y++)
     {
@@ -83,7 +82,6 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
             }
         }
         mesh.addVertices(vertices);
-        //mesh.addTexCoords(texCoords);
     }
     
 }
@@ -104,30 +102,14 @@ void DistortedMap::draw(float x, float y)
     shader.setUniform2f("meshSize", (CARTOGRAM_GRID_SIZE+1), (CARTOGRAM_GRID_SIZE+1));
     
     shader.setUniform1f("normalMouseX", float(ofGetMouseX()) / float(ofGetWidth()));
-        
-        /*glBegin(GL_QUADS);
-
-            glMultiTexCoord2f(GL_TEXTURE0, 0.0, 0.0);
-            glMultiTexCoord2f(GL_TEXTURE1, 0.0, 0.0);
-            glVertex2f(0.0, 0.0);
-            
-            glMultiTexCoord2f(GL_TEXTURE0, mapSE.x, 0.0);
-            glMultiTexCoord2f(GL_TEXTURE1, distortionSE.x, 0.0);
-            glVertex2f(gMap.map.width, 0.0);
-            
-            glMultiTexCoord2f(GL_TEXTURE0, mapSE.x, mapSE.y);
-            glMultiTexCoord2f(GL_TEXTURE1, distortionSE.x, distortionSE.y);
-            glVertex2f(gMap.map.width, gMap.map.height);
     
-            glMultiTexCoord2f(GL_TEXTURE0, 0.0, mapSE.y);
-            glMultiTexCoord2f(GL_TEXTURE1, 0.0, distortionSE.y);
-            glVertex2f(0.0, gMap.map.height);
-    
-        glEnd();*/
+    float aspect = gMap.map.width / gMap.map.height;
+    float scaleX = float(ofGetWidth()) / float(CARTOGRAM_GRID_SIZE+1);
+    float scaleY = float(ofGetHeight()) / float(CARTOGRAM_GRID_SIZE+1);
     
         glPushMatrix();
-            //glTranslatef(0, 0, 1);
-            //glScalef(30, 30, 1);
+            glTranslatef(0, 0, 0);
+            glScalef(scaleX, scaleY, 1);
             mesh.draw();
         glPopMatrix();
     
