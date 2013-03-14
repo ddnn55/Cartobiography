@@ -110,8 +110,8 @@ ofImage GoogleMap::makeMap()
             urlStream << "&scale=1&size=512x512&sensor=false";
             CBLog(urlStream.str());
             
-            //ofHttpResponse response = ofLoadURL(urlStream.str()); // FIXME google rate limiting... 
-            ofHttpResponse response = ofLoadURL("http://www.cs.arizona.edu/solar/solar.512.512.gif");
+            ofHttpResponse response = ofLoadURL(urlStream.str()); // FIXME google rate limiting... 
+            //ofHttpResponse response = ofLoadURL("http://www.cs.arizona.edu/solar/solar.512.512.gif");
             ofImage tile;
             tile.loadImage(response.data);
             
