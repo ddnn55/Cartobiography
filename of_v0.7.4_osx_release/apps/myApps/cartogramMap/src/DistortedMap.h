@@ -27,6 +27,7 @@ private:
     GoogleMap gMap;
     
     ofShader shader;
+    ofMesh mesh;
     
     //ofShader distortionShader;
     //bool shaderLoaded;

@@ -56,6 +56,36 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
     distortion.loadData(data, (CARTOGRAM_GRID_SIZE+1), (CARTOGRAM_GRID_SIZE+1), GL_RGB);
     
     delete[] data;
+    
+    
+    ofPoint distortionSE = distortion.getCoordFromPercent(1, 1);
+    //mesh.enableTextures();
+    
+    for(int y = 0; y < CARTOGRAM_GRID_SIZE+1; y++)
+    {
+        std::vector< ofVec3f > vertices;
+        //std::vector< ofVec2f > texCoords;
+        for(int x = 0; x < CARTOGRAM_GRID_SIZE+1; x++)
+        {
+            vertices.push_back(ofVec3f(x, y, 0.0));
+            //texCoords.push_back(ofVec2f(distortionSE.x * float(x) / float(CARTOGRAM_GRID_SIZE),
+            //                            distortionSE.y * float(y) / float(CARTOGRAM_GRID_SIZE)));
+            
+            if(y > 0 && x < CARTOGRAM_GRID_SIZE)
+            {
+                mesh.addTriangle((y-1) * (CARTOGRAM_GRID_SIZE+1) + x,
+                                 (y-1) * (CARTOGRAM_GRID_SIZE+1) + x+1,
+                                 (y  ) * (CARTOGRAM_GRID_SIZE+1) + x);
+                
+                mesh.addTriangle((y-1) * (CARTOGRAM_GRID_SIZE+1) + x+1,
+                                 (y  ) * (CARTOGRAM_GRID_SIZE+1) + x+1,
+                                 (y  ) * (CARTOGRAM_GRID_SIZE+1) + x);
+            }
+        }
+        mesh.addVertices(vertices);
+        //mesh.addTexCoords(texCoords);
+    }
+    
 }
 
 void DistortedMap::draw(float x, float y)
@@ -67,11 +97,15 @@ void DistortedMap::draw(float x, float y)
     shader.setUniformTexture("distortion", distortion, 1);
     
     ofPoint mapSE = gMap.map.getTextureReference().getCoordFromPercent(1, 1);
-    ofPoint distortionSE = distortion.getCoordFromPercent(1, 1);
     
+    ofPoint distortionSE = distortion.getCoordFromPercent(1, 1);
     shader.setUniform2f("mapSize", mapSE.x, mapSE.y);
+    shader.setUniform2f("distortionSize", distortionSE.x, distortionSE.y);
+    shader.setUniform2f("meshSize", (CARTOGRAM_GRID_SIZE+1), (CARTOGRAM_GRID_SIZE+1));
+    
+    shader.setUniform1f("normalMouseX", float(ofGetMouseX()) / float(ofGetWidth()));
         
-        glBegin(GL_QUADS);
+        /*glBegin(GL_QUADS);
 
             glMultiTexCoord2f(GL_TEXTURE0, 0.0, 0.0);
             glMultiTexCoord2f(GL_TEXTURE1, 0.0, 0.0);
@@ -89,7 +123,13 @@ void DistortedMap::draw(float x, float y)
             glMultiTexCoord2f(GL_TEXTURE1, 0.0, distortionSE.y);
             glVertex2f(0.0, gMap.map.height);
     
-        glEnd();
+        glEnd();*/
+    
+        glPushMatrix();
+            //glTranslatef(0, 0, 1);
+            //glScalef(30, 30, 1);
+            mesh.draw();
+        glPopMatrix();
     
     shader.end();
 }

@@ -70,8 +70,8 @@
 		1312554A16E81C9A00338F15 /* Bounds.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Bounds.cpp; sourceTree = "<group>"; };
 		1312554B16E81C9A00338F15 /* Bounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bounds.h; sourceTree = "<group>"; };
 		1312554E16EFC2F600338F15 /* CBDebug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CBDebug.h; sourceTree = "<group>"; };
-		1312556116F13CDB00338F15 /* distort.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = distort.frag; sourceTree = "<group>"; };
-		1312556216F13CDB00338F15 /* distort.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = distort.vert; sourceTree = "<group>"; };
+		1312556116F13CDB00338F15 /* distort.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = distort.frag; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
+		1312556216F13CDB00338F15 /* distort.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = distort.vert; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
