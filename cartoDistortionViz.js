@@ -1,5 +1,4 @@
 var step = 1;
-var padding = 0.0;
 var scale = 10;
 
 var fs = require('fs');
@@ -25,13 +24,7 @@ var photos = JSON.parse(fs.readFileSync(photosPath, 'utf-8'));
       gridBottom = 0,
       gridRight = gridSize-1,
       gridTop = gridSize-1
-  /*var gridLeft   = Math.floor(gridSize * padding),
-      gridRight  = Math.floor(gridSize - 1 - gridSize * padding),
-      gridBottom = Math.floor(gridSize * padding),
-      gridTop    = Math.floor(gridSize - 1 - gridSize * padding);*/
-  //process.stderr.write('grid inside', gridLeft, gridRight, gridBottom, gridTop);
 
-  //var internalGridSize  = gridRight - gridLeft;
   var internalGridSize = gridSize;
 
 

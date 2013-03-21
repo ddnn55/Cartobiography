@@ -1,12 +1,11 @@
-var padding = 0.0,
-    maxPhotos = 0,
+var maxPhotos = 0,
     minDensity = 1.0;
 
 var fs = require('fs'),
     path = require('path');
 
 var path = process.argv[2],
-    gridWidth = parseInt(process.argv[4]);
+    gridSize = parseInt(process.argv[4]);
 
 fs.readFile(path, 'utf-8', function(err, str) {
   if (err) throw err;
@@ -28,20 +27,13 @@ fs.readFile(path, 'utf-8', function(err, str) {
   var aspect = width / height;
   //process.stderr.write('aspect', aspect);
 
-  var gridHeight = //Math.floor(gridWidth / aspect);
-                   gridWidth;
-  //process.stderr.write('grid size', gridWidth, gridHeight);
+  var gridHeight = //Math.floor(gridSize / aspect);
+                   gridSize;
+  //process.stderr.write('grid size', gridSize, gridHeight);
 
-  var gridLeft   = Math.floor(gridWidth * padding),
-      gridRight  = Math.floor(gridWidth - 1 - gridWidth * padding),
-      gridBottom = Math.floor(gridHeight * padding),
-      gridTop    = Math.floor(gridHeight - 1 - gridHeight * padding);
   //process.stderr.write('grid inside', gridLeft, gridRight, gridBottom, gridTop);
 
-  var internalGridWidth  = gridRight - gridLeft,
-      internalGridHeight = gridTop - gridBottom;
-
-  var averageDensity = photos.length / ( internalGridWidth * internalGridHeight );
+  var averageDensity = photos.length / ( gridSize * gridSize );
   process.stderr.write('averageDensity: ' + averageDensity);
 
   var col = [];
@@ -49,16 +41,10 @@ fs.readFile(path, 'utf-8', function(err, str) {
     col.push(-1);
   }
 
-  var grid = new Array(gridWidth);
-  for(var x = 0; x < gridWidth; x++) {
+  var grid = new Array(gridSize);
+  for(var x = 0; x < gridSize; x++) {
     grid[x] = new Array(gridHeight);
     for(var y = 0; y < gridHeight; y++) {
-      grid[x][y] = -1;
-    }
-  }
-  
-  for(var x = gridLeft; x <= gridRight; x++) {
-    for(var y = gridBottom; y <= gridTop; y++) {
       grid[x][y] = minDensity;
     }
   }
@@ -67,37 +53,33 @@ fs.readFile(path, 'utf-8', function(err, str) {
     var normalX = (p.lon - left)   / width,
         normalY = (p.lat - bottom) / height;
 
-    var gridX = Math.floor(gridLeft + normalX * internalGridWidth),
-        gridY = Math.floor(gridBottom + normalY * internalGridHeight);
+    var gridX = Math.floor(normalX * gridSize),
+        gridY = Math.floor(normalY * gridHeight);
+
+    if(gridX == gridSize) gridX = gridSize - 1;
+    if(gridY == gridSize) gridY = gridSize - 1;
 
     grid[gridX][gridY] += 1.0;
   });
 
-  /*for(var x = 0; x < gridWidth; x++) {
-    for(var y = 0; y < gridHeight; y++) {
-      if(grid[x][y] == -1)
-        grid[x][y] = 2.0 * averageDensity;
-    }
-  }*/
-
-  var cartogramInputString = "";
+  var densityString = "";
 
   for(var y = 0; y < gridHeight; y++) {
-    for(var x = 0; x < gridWidth; x++) {
-      cartogramInputString += (grid[x][y] + ' ');
+    for(var x = 0; x < gridSize; x++) {
+      densityString += (grid[x][y] + ' ');
     }
-    cartogramInputString += "\n";
+    densityString += "\n";
   }
 
-  outName = "data/" + process.argv[3] + ".density."+gridWidth;
-  fs.writeFile(outName + ".dat", cartogramInputString);
+  outName = "data/" + process.argv[3] + ".density."+gridSize;
+  fs.writeFile(outName + ".dat", densityString);
   fs.writeFile(outName + ".meta.json",
     JSON.stringify({
       "left" : left,
       "right" : right,
       "bottom" : bottom,
       "top" : top,
-      "grid_size" : gridWidth
+      "grid_size" : gridSize
     })
   );
 
