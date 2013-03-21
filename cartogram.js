@@ -36,11 +36,6 @@ fs.readFile(path, 'utf-8', function(err, str) {
   var averageDensity = photos.length / ( gridSize * gridSize );
   process.stderr.write('averageDensity: ' + averageDensity);
 
-  var col = [];
-  for(var y = 0; y < gridHeight; y++) {
-    col.push(-1);
-  }
-
   var grid = new Array(gridSize);
   for(var x = 0; x < gridSize; x++) {
     grid[x] = new Array(gridHeight);

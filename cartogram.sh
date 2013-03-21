@@ -10,8 +10,8 @@ cmd1="node cartogram.js $photos_json $out $grid_size"
 echo $cmd1
 `$cmd1`
 
-cmd2="./cart-1.2.2/cart $grid_size $grid_size data/$out.density.$grid_size.dat data/$out.distortion.dat"
+cmd2="./cart-1.2.2/cart $grid_size $grid_size data/$out.density.$grid_size.dat data/$out.distortion.$grid_size.dat"
 echo $cmd2
 `$cmd2`
 
-node cartoDistortionViz.js data/$out.distortion.dat $photos_json $grid_size > data/$out.$grid_size.svg
+node cartoDistortionViz.js data/$out.distortion.$grid_size.dat $photos_json $grid_size > data/$out.$grid_size.svg
