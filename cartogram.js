@@ -1,15 +1,20 @@
-var gridWidth = 1024,
-    padding = 0.0;
+var padding = 0.0,
+    maxPhotos = 0,
+    minDensity = 1.0;
 
 var fs = require('fs'),
     path = require('path');
 
-var path = process.argv[2];
+var path = process.argv[2],
+    gridWidth = parseInt(process.argv[4]);
 
 fs.readFile(path, 'utf-8', function(err, str) {
   if (err) throw err;
 
   var photos = JSON.parse(str);
+  if(maxPhotos > 0)
+    photos = photos.slice(0, maxPhotos);
+  process.stderr.write('photo count: ' + photos.length + "\n");
 
   var left   = photos.map(function(p){ return p.lon; }).reduce(function(a, b) { return a < b ? a : b; });
   var right  = photos.map(function(p){ return p.lon; }).reduce(function(a, b) { return a > b ? a : b; });
@@ -54,7 +59,7 @@ fs.readFile(path, 'utf-8', function(err, str) {
   
   for(var x = gridLeft; x <= gridRight; x++) {
     for(var y = gridBottom; y <= gridTop; y++) {
-      grid[x][y] = 0.01;
+      grid[x][y] = minDensity;
     }
   }
   
@@ -84,14 +89,15 @@ fs.readFile(path, 'utf-8', function(err, str) {
     cartogramInputString += "\n";
   }
 
-  fs.writeFile(process.argv[3] + ".density_grid.dat", cartogramInputString);
-  
-  fs.writeFile(process.argv[3] + ".meta.json",
+  outName = "data/" + process.argv[3] + ".density."+gridWidth;
+  fs.writeFile(outName + ".dat", cartogramInputString);
+  fs.writeFile(outName + ".meta.json",
     JSON.stringify({
       "left" : left,
       "right" : right,
       "bottom" : bottom,
       "top" : top,
+      "grid_size" : gridWidth
     })
   );
 

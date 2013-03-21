@@ -1,11 +1,12 @@
 var step = 1;
-var gridSize = 1025;
 var padding = 0.0;
+var scale = 10;
 
 var fs = require('fs');
 
 var path = process.argv[2];
 var photosPath = process.argv[3];
+var gridSize = parseInt(process.argv[4]) + 1;
 
 var photos = JSON.parse(fs.readFileSync(photosPath, 'utf-8'));
   var latLngLeft   = photos.map(function(p){ return p.lon; }).reduce(function(a, b) { return a < b ? a : b; });
@@ -52,22 +53,22 @@ fs.readFile(path, 'utf-8', function(err, str) {
     }
   }
 
-  console.log('<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="'+gridSize+'" height="'+gridSize+'">');
+  console.log('<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="'+scale*gridSize+'" height="'+scale*gridSize+'">');
   
   for(var x = 0; x < gridSize; x += step) {
-    console.log('<polyline fill="none" stroke="black" stroke-width="0.1px" points="');
+    console.log('<polyline fill="none" stroke="black" stroke-width="0.4px" points="');
     for(var y = 0; y < gridSize; y += step) {
       var p = grid[x][y]; 
-      process.stdout.write(p[0] + ',' + (gridSize - p[1]) + ' ');
+      process.stdout.write(scale*p[0] + ',' + scale*(gridSize - p[1]) + ' ');
       //console.log('<rect x="'+p[0]+'" y="'+(1024-p[1])+'" width="1" height="1" fill="black" stroke="none"/>');
     }
     console.log('"/>');
   }
   for(var y = 0; y < gridSize; y += step) {
-    console.log('<polyline fill="none" stroke="black" stroke-width="0.1px" points="');
+    console.log('<polyline fill="none" stroke="black" stroke-width="0.4px" points="');
     for(var x = 0; x < gridSize; x += step) {
       var p = grid[x][y]; 
-      process.stdout.write(p[0] + ',' + (gridSize - p[1]) + ' ');
+      process.stdout.write(scale*p[0] + ',' + scale*(gridSize - p[1]) + ' ');
       //console.log('<rect x="'+p[0]+'" y="'+(1024-p[1])+'" width="1" height="1" fill="black" stroke="none"/>');
     }
     console.log('"/>');
@@ -106,7 +107,7 @@ fs.readFile(path, 'utf-8', function(err, str) {
     var dNE = Math.sqrt( (1.0 - xFraction) * (1.0 - xFraction) + (1.0 - yFraction) * (1.0 - yFraction) );
     var totalWeight = 1.0/dSW + 1.0/dNW + 1.0/dSE + 1.0/dNE;
 
-    process.stderr.write('pt: ' + pt[0] + ', ' + pt[1] + ' : ' + left +', '+ right +', '+ top +', '+ bottom + '\n');
+    //process.stderr.write('pt: ' + pt[0] + ', ' + pt[1] + ' : ' + left +', '+ right +', '+ top +', '+ bottom + '\n');
 
     return [
       (sw[0]/dSW + se[0]/dSE + ne[0]/dNE + nw[0]/dNW) / totalWeight,
@@ -116,7 +117,7 @@ fs.readFile(path, 'utf-8', function(err, str) {
   
   photos.forEach(function(p){
     var pt = project([p.lon, p.lat]);
-    console.log('<rect x="'+pt[0]+'" y="'+pt[1]+'" width="3" height="3" fill="red" stroke="none"/>');
+    console.log('<rect x="'+scale*pt[0]+'" y="'+scale*pt[1]+'" width="3" height="3" fill="red" stroke="none"/>');
   });
 
   console.log('</svg>');
