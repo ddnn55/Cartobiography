@@ -143,6 +143,7 @@ fs.readFile(path, 'utf-8', function(err, str) {
   var rectSize = 3.0;
   photos.forEach(function(p){
     var pt = project([p.lon, p.lat]);
+    /* FIXME -1 here? */
     console.log('<rect x="'+(scale*pt[0]-rectSize/2.0)+'" y="'+(scale*(gridSize - 1 - pt[1])-rectSize/2.0)+'" width="'+rectSize+'" height="'+rectSize+'" fill="red" stroke="none"/>');
   });
 
