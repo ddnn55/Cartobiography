@@ -1,5 +1,6 @@
 var maxPhotos = 0,
-    minDensity = 0.02;
+    minDensity = 0.01,
+    blurPower = 8;
 
 var fs = require('fs'),
     path = require('path');
@@ -34,13 +35,16 @@ fs.readFile(path, 'utf-8', function(err, str) {
   //process.stderr.write('grid inside', gridLeft, gridRight, gridBottom, gridTop);
 
   var averageDensity = photos.length / ( gridSize * gridSize );
-  process.stderr.write('averageDensity: ' + averageDensity);
+  process.stderr.write('averageDensity: ' + averageDensity + "\n");
 
-  var grid = new Array(gridSize);
-  for(var x = 0; x < gridSize; x++) {
-    grid[x] = new Array(gridHeight);
-    for(var y = 0; y < gridHeight; y++) {
-      grid[x][y] = minDensity;
+  var grid = new Array(2);
+  for(var g = 0; g < 2; g++) {
+    grid[g] = new Array(gridSize);
+    for(var x = 0; x < gridSize; x++) {
+      grid[g][x] = new Array(gridHeight);
+      for(var y = 0; y < gridHeight; y++) {
+        grid[g][x][y] = minDensity;
+      }
     }
   }
   
@@ -54,11 +58,26 @@ fs.readFile(path, 'utf-8', function(err, str) {
     if(gridX == gridSize) gridX = gridSize - 1;
     if(gridY == gridSize) gridY = gridSize - 1;
 
-    grid[gridX][gridY] += 1.0;
+    grid[0][gridX][gridY] += 1.0;
   });
 
-  var densityString = "";
+  var dest = 1;
+  for(var b = 0; b < blurPower; b++) {
+    for(var y = 1; y < gridSize-1; y++) {
+      for(var x = 1; x < gridSize-1; x++) {
+        grid[dest][x][y] =
+	   0.4 * grid[(dest+1)%2][x][y] +
+	   0.15 * grid[(dest+1)%2][x][y+1] +
+	   0.15 * grid[(dest+1)%2][x][y-1] +
+	   0.15 * grid[(dest+1)%2][x+1][y] +
+	   0.15 * grid[(dest+1)%2][x-1][y];
+      }
+    }
+    dest = (dest+1)%2;
+  }
+  grid = grid[dest];
 
+  var densityString = "";
   for(var y = 0; y < gridHeight; y++) {
     for(var x = 0; x < gridSize; x++) {
       densityString += (grid[x][y] + ' ');
