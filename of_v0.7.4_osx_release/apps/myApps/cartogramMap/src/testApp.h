@@ -2,12 +2,22 @@
 
 #include "ofMain.h"
 
+//#include "ofGui.h"
+
 #include "DistortedMap.h"
 #include "GoogleMap.h"
 
 class testApp : public ofBaseApp{
     
+//    ofSlider radius;
+//    ofSlider r, g, b;
+//    ofSlider circleResolution;
+//    ofToggle filled;
+//    ofPanel gui;
+    
     DistortedMap myMap;
+    
+    bool wireframe;
     
 	public:
 		void setup();

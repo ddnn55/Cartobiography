@@ -13,7 +13,19 @@ void testApp::setup(){
     latLngBounds.bottom = 20.627166666666668;
     latLngBounds.top    = 52.312333333333335;
     
-    myMap.load(latLngBounds, "photos_cart.dat");
+    myMap.load(latLngBounds, "../../../../../../data/photos.distortion.128.dat");
+    
+    
+    wireframe = false;
+    
+    
+//    gui.setup("panel"); // most of the time you don't need a name
+//	gui.add(filled.setup("bFill", true));
+//	gui.add(radius.setup( "radius", 140, 10, 300 ));
+//	gui.add(r.setup( "red", 100.0f, 0, 255 ));
+//	gui.add(g.setup( "green", 100.0f, 0, 255 ));
+//	gui.add(b.setup( "blue", 140.0f, 0, 255 ));
+//	gui.add(circleResolution.setup("circle res", 5, 3, 90, true));
 }
 
 //--------------------------------------------------------------
@@ -23,6 +35,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+    ofBackground(0, 0, 0);
     myMap.draw(0, 0);
 }
 
@@ -33,7 +46,10 @@ void testApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
-
+    switch(key)
+    {
+        case 'w': case 'W': wireframe = !wireframe; break;
+    }
 }
 
 //--------------------------------------------------------------

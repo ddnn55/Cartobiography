@@ -130,6 +130,7 @@ ofImage GoogleMap::loadTileFromGoogleCached(TileLocator tileLocator)
     urlStream << "center=" << tileLocator.center.y << "," << tileLocator.center.x;
     urlStream << "&zoom=" << tileLocator.zoomLevel;
     urlStream << "&scale=1&size=512x512&sensor=false";
+    
     CBLog("Loading from Google: " + urlStream.str());
 
     ofHttpResponse response = ofLoadURL(urlStream.str());

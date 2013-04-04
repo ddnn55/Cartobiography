@@ -6,8 +6,7 @@
 //
 //
 
-#define CARTOGRAM_GRID_SIZE 1024
-#define MESH_SIZE_MULTIPLIER 2
+#define CARTOGRAM_GRID_SIZE 128
 
 #include <ofMain.h>
 
@@ -23,10 +22,10 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
     ofEnableAlphaBlending();
     ofSetFrameRate(60);
     glEnable(GL_DEPTH_TEST);
-        
+    
     shader.load("shaders/distort.vert", "shaders/distort.frag");
     
-    gMap.load(5, bounds);
+    gMap.load(4, bounds);
     
     ofFile file(filename);
     ofBuffer contents = file.readToBuffer();
@@ -61,24 +60,25 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
     
     ofPoint distortionSE = distortion.getCoordFromPercent(1, 1);
     
-    for(int y = 0; y < MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1); y++)
+    for(int y = 0; y < CARTOGRAM_GRID_SIZE+1; y++)
     {
         std::vector< ofVec3f > vertices;
-        for(int x = 0; x < MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1); x++)
+        //std::vector< ofVec2f > texCoords;
+        for(int x = 0; x < CARTOGRAM_GRID_SIZE+1; x++)
         {
-            vertices.push_back(
-                ofVec3f(float(x) / float(MESH_SIZE_MULTIPLIER),
-                        float(y) / float(MESH_SIZE_MULTIPLIER), 0.0));
+            vertices.push_back(ofVec3f(x, y, 0.0));
+            //texCoords.push_back(ofVec2f(distortionSE.x * float(x) / float(CARTOGRAM_GRID_SIZE),
+            //                            distortionSE.y * float(y) / float(CARTOGRAM_GRID_SIZE)));
             
-            if(y > 0 && x < MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1))
+            if(y > 0 && x < CARTOGRAM_GRID_SIZE)
             {
-                mesh.addTriangle((y-1) * MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1) + x,
-                                 (y-1) * MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1) + x+1,
-                                 (y  ) * MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1) + x);
+                mesh.addTriangle((y-1) * (CARTOGRAM_GRID_SIZE+1) + x,
+                                 (y-1) * (CARTOGRAM_GRID_SIZE+1) + x+1,
+                                 (y  ) * (CARTOGRAM_GRID_SIZE+1) + x);
                 
-                mesh.addTriangle((y-1) * MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1) + x+1,
-                                 (y  ) * MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1) + x+1,
-                                 (y  ) * MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1) + x);
+                mesh.addTriangle((y-1) * (CARTOGRAM_GRID_SIZE+1) + x+1,
+                                 (y  ) * (CARTOGRAM_GRID_SIZE+1) + x+1,
+                                 (y  ) * (CARTOGRAM_GRID_SIZE+1) + x);
             }
         }
         mesh.addVertices(vertices);
@@ -107,11 +107,12 @@ void DistortedMap::draw(float x, float y)
     float scaleX = float(ofGetWidth()) / float(CARTOGRAM_GRID_SIZE+1);
     float scaleY = float(ofGetHeight()) / float(CARTOGRAM_GRID_SIZE+1);
     
-        glPushMatrix();
-            glTranslatef(0, 0, 0);
-            glScalef(scaleX, scaleY, 1);
-            mesh.draw();
-        glPopMatrix();
+    glPushMatrix();
+    glTranslatef(0, 0, 0);
+    glScalef(scaleX, scaleY, 1);
+    //mesh.setMode(OF_PRIMITIVE_LINES);
+    mesh.draw();
+    glPopMatrix();
     
     shader.end();
 }
