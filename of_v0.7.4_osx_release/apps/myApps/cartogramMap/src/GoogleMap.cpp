@@ -135,6 +135,8 @@ ofImage GoogleMap::loadTileFromGoogleCached(TileLocator tileLocator)
 
     ofHttpResponse response = ofLoadURL(urlStream.str());
 
+    
+    
     ofImage tile;
     tile.loadImage(response.data);
     tile.saveImage(cachedTilePath);

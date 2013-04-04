@@ -25,7 +25,7 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
     
     shader.load("shaders/distort.vert", "shaders/distort.frag");
     
-    gMap.load(4, bounds);
+    gMap.load(6, bounds);
     
     ofFile file(filename);
     ofBuffer contents = file.readToBuffer();

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1024" height="1024">
+<polyline fill="none" stroke="black" stroke-width="0.4px" points="0,768 0,531.6165120000001 0,246.65855999999997 0,0 "/>
+<polyline fill="none" stroke="black" stroke-width="0.4px" points="236.383488,768 197.75872,570.24128 192.388096,211.06944 224.007424,0 "/>
+<polyline fill="none" stroke="black" stroke-width="0.4px" points="521.34144,768 556.93056,575.611904 541.51424,226.48576000000003 486.49472,0 "/>
+<polyline fill="none" stroke="black" stroke-width="0.4px" points="768,768 768,543.992576 768,281.50528 768,0 "/>
+<polyline fill="none" stroke="black" stroke-width="0.4px" points="0,768 236.383488,768 521.34144,768 768,768 "/>
+<polyline fill="none" stroke="black" stroke-width="0.4px" points="0,531.6165120000001 197.75872,570.24128 556.93056,575.611904 768,543.992576 "/>
+<polyline fill="none" stroke="black" stroke-width="0.4px" points="0,246.65855999999997 192.388096,211.06944 541.51424,226.48576000000003 768,281.50528 "/>
+<polyline fill="none" stroke="black" stroke-width="0.4px" points="0,0 224.007424,0 486.49472,0 768,0 "/>
+<rect x="-1.5" y="-1.5" width="3" height="3" fill="red" stroke="none"/>
+<rect x="-1.5" y="766.5" width="3" height="3" fill="red" stroke="none"/>
+<rect x="766.5" y="-1.5" width="3" height="3" fill="red" stroke="none"/>
+<rect x="766.5" y="766.5" width="3" height="3" fill="red" stroke="none"/>
+<rect x="370.647904" y="370.64790400000004" width="3" height="3" fill="red" stroke="none"/>
+<rect x="370.647904" y="370.64790400000004" width="3" height="3" fill="red" stroke="none"/>
+<rect x="370.647904" y="370.64790400000004" width="3" height="3" fill="red" stroke="none"/>
+<rect x="370.647904" y="370.64790400000004" width="3" height="3" fill="red" stroke="none"/>
+<rect x="370.647904" y="370.64790400000004" width="3" height="3" fill="red" stroke="none"/>
+<rect x="370.647904" y="370.64790400000004" width="3" height="3" fill="red" stroke="none"/>
+<rect x="370.647904" y="370.64790400000004" width="3" height="3" fill="red" stroke="none"/>
+<rect x="370.647904" y="370.64790400000004" width="3" height="3" fill="red" stroke="none"/>
+<rect x="370.647904" y="370.64790400000004" width="3" height="3" fill="red" stroke="none"/>
+<rect x="682.0484160000001" y="766.5" width="3" height="3" fill="red" stroke="none"/>
+</svg>
