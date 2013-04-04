@@ -84,6 +84,9 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
         mesh.addVertices(vertices);
     }
     
+    shader.begin();
+    shader.setUniform1i("derivative", 0);
+    shader.end();
 }
 
 void DistortedMap::drawWireframe(float x, float y)
@@ -95,9 +98,15 @@ void DistortedMap::drawWireframe(float x, float y)
 
 void DistortedMap::drawDerivative(float x, float y)
 {
-    mesh.setMode(OF_PRIMITIVE_LINE_STRIP);
+    shader.begin();
+    shader.setUniform1i("derivative", 1);
+    shader.end();
+    
     draw(x, y);
-    mesh.setMode(OF_PRIMITIVE_TRIANGLES);
+    
+    shader.begin();
+    shader.setUniform1i("derivative", 0);
+    shader.end();
 }
 
 void DistortedMap::draw(float x, float y)

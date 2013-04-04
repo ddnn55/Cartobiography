@@ -9,6 +9,8 @@ uniform vec2 distortionSize;
 
 uniform float normalMouseX;
 
+uniform int derivative;
+
 void main(void) {
     
     vec2 normalPos = vec2(gl_Vertex.x / meshSize.x, gl_Vertex.y / meshSize.y);

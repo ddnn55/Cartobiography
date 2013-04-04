@@ -3,8 +3,7 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     
-    ofSetWindowPosition(0, 0);
-    ofSetWindowShape(ofGetScreenWidth(), ofGetScreenHeight());
+
     ofEnableSmoothing();
     
     
@@ -15,6 +14,10 @@ void testApp::setup(){
     latLngBounds.top    = 52.312333333333335;
     
     myMap.load(latLngBounds, "../../../../../../data/photos.distortion.128.dat");
+    
+    ofSetWindowPosition(0, 0);
+    //ofSetWindowShape(ofGetScreenWidth(), ofGetScreenHeight());
+    ofSetWindowShape(myMap.gMap.map.width, myMap.gMap.map.height);
     
     gui.addLabel("'g' -- toggle GUI display");
     gui.addToggle("wireframe", &wireframe); wireframe = false;

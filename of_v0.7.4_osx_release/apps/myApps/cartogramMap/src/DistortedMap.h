@@ -24,9 +24,11 @@ public:
     void drawWireframe(float x, float y);
     void drawDerivative(float x, float y);
     
+    GoogleMap gMap;
+    
 private:
     ofTexture distortion;
-    GoogleMap gMap;
+    
     
     ofShader shader;
     ofMesh mesh;
