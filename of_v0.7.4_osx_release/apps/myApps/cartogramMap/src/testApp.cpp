@@ -1,9 +1,10 @@
 #include "testApp.h"
 
+#include "CBUtil.h"
+
 //--------------------------------------------------------------
 void testApp::setup(){
     
-
     ofEnableSmoothing();
     
     
@@ -22,16 +23,11 @@ void testApp::setup(){
     gui.addLabel("'g' -- toggle GUI display");
     gui.addToggle("wireframe", &wireframe); wireframe = false;
     gui.addToggle("derivative", &derivative); derivative = false;
+    
+    gui.addSpacer();
+    derivativeLabel = gui.addLabel("derivative: ");
+    
     gui.autoSizeToFitWidgets();
-    
-    
-//    gui.setup("panel"); // most of the time you don't need a name
-//	gui.add(filled.setup("bFill", true));
-//	gui.add(radius.setup( "radius", 140, 10, 300 ));
-//	gui.add(r.setup( "red", 100.0f, 0, 255 ));
-//	gui.add(g.setup( "green", 100.0f, 0, 255 ));
-//	gui.add(b.setup( "blue", 140.0f, 0, 255 ));
-//	gui.add(circleResolution.setup("circle res", 5, 3, 90, true));
 }
 
 //--------------------------------------------------------------
@@ -67,7 +63,9 @@ void testApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y){
-
+    string name = "derivative: " + vec2string(myMap.derivativeAtScreenCoord(x, y));
+    cout << name << endl;
+    
 }
 
 //--------------------------------------------------------------

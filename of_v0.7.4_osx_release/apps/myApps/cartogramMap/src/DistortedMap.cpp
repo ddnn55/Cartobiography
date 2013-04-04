@@ -33,6 +33,9 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
     
     float* data = new float[(CARTOGRAM_GRID_SIZE+1) * (CARTOGRAM_GRID_SIZE+1) * 3];
     
+    distortion.allocate(CARTOGRAM_GRID_SIZE+1, CARTOGRAM_GRID_SIZE+1, OF_IMAGE_COLOR);
+    //distortion.loadData(data, (CARTOGRAM_GRID_SIZE+1), (CARTOGRAM_GRID_SIZE+1), GL_RGB);
+    
     for(int y = CARTOGRAM_GRID_SIZE; y >= 0; y--)
     {
         for(int x = 0; x < CARTOGRAM_GRID_SIZE+1; x++)
@@ -49,16 +52,20 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
             data[ 3 * (y * (CARTOGRAM_GRID_SIZE+1) + x)     ] = distortedX;
             data[ 3 * (y * (CARTOGRAM_GRID_SIZE+1) + x) + 1 ] = distortedY;
             
+            distortion.getPixelsRef().setColor(x, y, ofFloatColor(distortedX, distortedY, 0.0, 1.0));
+            
         }
     }
     
-    distortion.allocate(CARTOGRAM_GRID_SIZE+1, CARTOGRAM_GRID_SIZE+1, GL_RGB32F);
-    distortion.loadData(data, (CARTOGRAM_GRID_SIZE+1), (CARTOGRAM_GRID_SIZE+1), GL_RGB);
+    
+    //distortion.allocate(CARTOGRAM_GRID_SIZE+1, CARTOGRAM_GRID_SIZE+1, GL_RGB32F);
+    //distortion.loadData(data, (CARTOGRAM_GRID_SIZE+1), (CARTOGRAM_GRID_SIZE+1), GL_RGB);
+    distortion.update();
     
     delete[] data;
     
     
-    ofPoint distortionSE = distortion.getCoordFromPercent(1, 1);
+    ofPoint distortionSE = distortion.getTextureReference().getCoordFromPercent(1, 1);
     
     for(int y = 0; y < CARTOGRAM_GRID_SIZE+1; y++)
     {
@@ -87,6 +94,15 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
     shader.begin();
     shader.setUniform1i("derivative", 0);
     shader.end();
+    
+    
+}
+
+ofVec2f DistortedMap::derivativeAtScreenCoord(int x, int y)
+{
+    ofVec2f gridCoord ( CARTOGRAM_GRID_SIZE * float(x) / float(ofGetWidth()), CARTOGRAM_GRID_SIZE * float(y) / float(ofGetHeight()));
+    //ofVec2f derivative(  );
+    return gridCoord;
 }
 
 void DistortedMap::drawWireframe(float x, float y)
@@ -120,7 +136,7 @@ void DistortedMap::draw(float x, float y)
     
     ofPoint mapSE = gMap.map.getTextureReference().getCoordFromPercent(1, 1);
     
-    ofPoint distortionSE = distortion.getCoordFromPercent(1, 1);
+    ofPoint distortionSE = distortion.getTextureReference().getCoordFromPercent(1, 1);
     shader.setUniform2f("mapSize", mapSE.x, mapSE.y);
     shader.setUniform2f("distortionSize", distortionSE.x, distortionSE.y);
     shader.setUniform2f("meshSize", (CARTOGRAM_GRID_SIZE+1), (CARTOGRAM_GRID_SIZE+1));

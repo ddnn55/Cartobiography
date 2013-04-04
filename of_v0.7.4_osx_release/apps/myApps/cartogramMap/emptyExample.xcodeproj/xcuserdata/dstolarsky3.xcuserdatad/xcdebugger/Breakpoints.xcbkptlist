@@ -36,7 +36,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "173"
-         endingLineNumber = "173">
+         endingLineNumber = "173"
+         landmarkName = "GoogleMap::tileLatLngCenterStr(int zoomLevel, int x, int y)"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -48,7 +50,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "183"
          endingLineNumber = "183"
-         landmarkName = "GoogleMap::tileLatLngCenterStr(int zoomLevel, int x, int y)"
+         landmarkName = "GoogleMap::tile2LatLng(int zoomLevel, float x, float y)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -100,7 +102,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "193"
          endingLineNumber = "193"
-         landmarkName = "GoogleMap::tile2LatLng(int zoomLevel, float x, float y)"
+         landmarkName = "GoogleMap::googlePixelToLatLng(ofVec2f googlePixel)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -225,11 +227,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/DistortedMap.cpp"
-         timestampString = "384975779.478969"
+         timestampString = "386797403.554898"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "85"
-         endingLineNumber = "85"
+         startingLineNumber = "70"
+         endingLineNumber = "70"
          landmarkName = "DistortedMap::load(Bounds&lt;float&gt; bounds, std::string filename)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -238,25 +240,51 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/DistortedMap.cpp"
-         timestampString = "384975779.478969"
+         timestampString = "386797403.554898"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "63"
-         endingLineNumber = "63"
-         landmarkName = "DistortedMap::load(Bounds&lt;float&gt; bounds, std::string filename)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/DistortedMap.cpp"
-         timestampString = "386789805.486865"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "125"
-         endingLineNumber = "125"
+         startingLineNumber = "141"
+         endingLineNumber = "141"
          landmarkName = "DistortedMap::draw(float x, float y)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "ofxUI/src/ofxUILabel.h"
+         timestampString = "386795024.839345"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "184"
+         endingLineNumber = "184"
+         landmarkName = "setLabel(string _label)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "ofxUI/src/ofxUILabel.h"
+         timestampString = "386795084.684832"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "185"
+         endingLineNumber = "185"
+         landmarkName = "setLabel(string _label)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/testApp.cpp"
+         timestampString = "386795160.156846"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "67"
+         endingLineNumber = "67"
+         landmarkName = "testApp::mouseMoved(int x, int y)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

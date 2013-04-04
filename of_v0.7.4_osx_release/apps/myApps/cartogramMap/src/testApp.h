@@ -21,7 +21,7 @@ class testApp : public ofBaseApp{
     bool wireframe, derivative;
     
     ofxUICanvas gui;
-    ofxUIRadio* displayMode;
+    ofxUILabel* derivativeLabel;
     
 	public:
 		void setup();

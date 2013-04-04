@@ -15,9 +15,8 @@ void main(void) {
     else
     {
         float scale = 1.0 + 100.0 * (abs(dFdx(MapTexCoord.x)) + abs(dFdy(MapTexCoord.y)));
-        gl_FragColor = scale * texture2D(colormap, MapTexCoord);
-        gl_FragColor.a = 1.0;
-        gl_FragColor.r = 1.0;
+        //gl_FragColor = scale * texture2D(colormap, MapTexCoord);
+        gl_FragColor = vec4( 1000.0 * dFdx(MapTexCoord.x) * vec3(1.0, 1.0, 1.0), 1.0 );
         
         //float scale = 0.0001;
         //gl_FragColor = vec4(scale / dFdx(MapTexCoord.x), scale / dFdy(MapTexCoord.y), 0.1, 1.0);
