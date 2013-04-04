@@ -7,6 +7,7 @@
 //
 
 #define CARTOGRAM_GRID_SIZE 1024
+#define MESH_SIZE_MULTIPLIER 2
 
 #include <ofMain.h>
 
@@ -60,25 +61,24 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
     
     ofPoint distortionSE = distortion.getCoordFromPercent(1, 1);
     
-    for(int y = 0; y < CARTOGRAM_GRID_SIZE+1; y++)
+    for(int y = 0; y < MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1); y++)
     {
         std::vector< ofVec3f > vertices;
-        //std::vector< ofVec2f > texCoords;
-        for(int x = 0; x < CARTOGRAM_GRID_SIZE+1; x++)
+        for(int x = 0; x < MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1); x++)
         {
-            vertices.push_back(ofVec3f(x, y, 0.0));
-            //texCoords.push_back(ofVec2f(distortionSE.x * float(x) / float(CARTOGRAM_GRID_SIZE),
-            //                            distortionSE.y * float(y) / float(CARTOGRAM_GRID_SIZE)));
+            vertices.push_back(
+                ofVec3f(float(x) / float(MESH_SIZE_MULTIPLIER),
+                        float(y) / float(MESH_SIZE_MULTIPLIER), 0.0));
             
-            if(y > 0 && x < CARTOGRAM_GRID_SIZE)
+            if(y > 0 && x < MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1))
             {
-                mesh.addTriangle((y-1) * (CARTOGRAM_GRID_SIZE+1) + x,
-                                 (y-1) * (CARTOGRAM_GRID_SIZE+1) + x+1,
-                                 (y  ) * (CARTOGRAM_GRID_SIZE+1) + x);
+                mesh.addTriangle((y-1) * MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1) + x,
+                                 (y-1) * MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1) + x+1,
+                                 (y  ) * MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1) + x);
                 
-                mesh.addTriangle((y-1) * (CARTOGRAM_GRID_SIZE+1) + x+1,
-                                 (y  ) * (CARTOGRAM_GRID_SIZE+1) + x+1,
-                                 (y  ) * (CARTOGRAM_GRID_SIZE+1) + x);
+                mesh.addTriangle((y-1) * MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1) + x+1,
+                                 (y  ) * MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1) + x+1,
+                                 (y  ) * MESH_SIZE_MULTIPLIER * (CARTOGRAM_GRID_SIZE+1) + x);
             }
         }
         mesh.addVertices(vertices);

@@ -32,6 +32,20 @@ public:
     ofImage map;
     
 private:
+    class TileLocator
+    {
+    public:
+        ofVec2f center;
+        unsigned short zoomLevel;
+        
+        string filename()
+        {
+            stringstream f;
+            f << "google_staticmap_" << center.x << "_" << center.y << "_" << zoomLevel << ".png";
+            return f.str();
+        };
+    };
+    
     void update();
     //void ensureVisibleTiles();
     //void ensureTile(int zoomLevel, int x, int y);
@@ -60,6 +74,7 @@ private:
     
     void setGoogleZoomLevel(unsigned char zoomLevel) { this->zoomLevel = zoomLevel; };
     ofImage makeMap();
+    ofImage loadTileFromGoogleCached(TileLocator tileLocator);
     
     Bounds<float> latLngToGooglePixel(const Bounds<float> & latLngBounds) const;
     ofVec2f latLngToGooglePixel(ofVec2f latLng) const;

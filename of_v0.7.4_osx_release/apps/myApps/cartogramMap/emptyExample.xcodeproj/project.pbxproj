@@ -72,6 +72,7 @@
 		1312554E16EFC2F600338F15 /* CBDebug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CBDebug.h; sourceTree = "<group>"; };
 		1312556116F13CDB00338F15 /* distort.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = distort.frag; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
 		1312556216F13CDB00338F15 /* distort.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = distort.vert; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
+		BAFAF333170CA78900611E68 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -151,6 +152,14 @@
 			path = shaders;
 			sourceTree = "<group>";
 		};
+		BAFAF332170CA77200611E68 /* doc */ = {
+			isa = PBXGroup;
+			children = (
+				BAFAF333170CA78900611E68 /* TODO.txt */,
+			);
+			name = doc;
+			sourceTree = "<group>";
+		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
@@ -208,6 +217,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				BAFAF332170CA77200611E68 /* doc */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				1312554F16F0FA7200338F15 /* bin */,
