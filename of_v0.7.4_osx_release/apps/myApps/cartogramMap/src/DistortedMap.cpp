@@ -25,7 +25,7 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
     
     shader.load("shaders/distort.vert", "shaders/distort.frag");
     
-    gMap.load(6, bounds);
+    gMap.load(4, bounds);
     
     ofFile file(filename);
     ofBuffer contents = file.readToBuffer();
@@ -86,8 +86,23 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
     
 }
 
+void DistortedMap::drawWireframe(float x, float y)
+{
+    mesh.setMode(OF_PRIMITIVE_LINE_STRIP);
+    draw(x, y);
+    mesh.setMode(OF_PRIMITIVE_TRIANGLES);
+}
+
+void DistortedMap::drawDerivative(float x, float y)
+{
+    mesh.setMode(OF_PRIMITIVE_LINE_STRIP);
+    draw(x, y);
+    mesh.setMode(OF_PRIMITIVE_TRIANGLES);
+}
+
 void DistortedMap::draw(float x, float y)
 {
+    
     ofSetColor(255);
     
     shader.begin();
@@ -110,7 +125,7 @@ void DistortedMap::draw(float x, float y)
     glPushMatrix();
     glTranslatef(0, 0, 0);
     glScalef(scaleX, scaleY, 1);
-    //mesh.setMode(OF_PRIMITIVE_LINES);
+    
     mesh.draw();
     glPopMatrix();
     

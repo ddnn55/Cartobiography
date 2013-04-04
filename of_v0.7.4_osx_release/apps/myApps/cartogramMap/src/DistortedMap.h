@@ -21,6 +21,8 @@ public:
     void load(Bounds<float> bounds, std::string filename);
     
     void draw(float x, float y);
+    void drawWireframe(float x, float y);
+    void drawDerivative(float x, float y);
     
 private:
     ofTexture distortion;

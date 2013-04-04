@@ -2,7 +2,8 @@
 
 #include "ofMain.h"
 
-//#include "ofGui.h"
+#define OFX_UI_NO_XML
+#include "ofxUI.h"
 
 #include "DistortedMap.h"
 #include "GoogleMap.h"
@@ -17,7 +18,10 @@ class testApp : public ofBaseApp{
     
     DistortedMap myMap;
     
-    bool wireframe;
+    bool wireframe, derivative;
+    
+    ofxUICanvas gui;
+    ofxUIRadio* displayMode;
     
 	public:
 		void setup();

@@ -5,6 +5,7 @@ void testApp::setup(){
     
     ofSetWindowPosition(0, 0);
     ofSetWindowShape(ofGetScreenWidth(), ofGetScreenHeight());
+    ofEnableSmoothing();
     
     
     Bounds<float> latLngBounds;
@@ -15,8 +16,10 @@ void testApp::setup(){
     
     myMap.load(latLngBounds, "../../../../../../data/photos.distortion.128.dat");
     
-    
-    wireframe = false;
+    gui.addLabel("'g' -- toggle GUI display");
+    gui.addToggle("wireframe", &wireframe); wireframe = false;
+    gui.addToggle("derivative", &derivative); derivative = false;
+    gui.autoSizeToFitWidgets();
     
     
 //    gui.setup("panel"); // most of the time you don't need a name
@@ -36,7 +39,13 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
     ofBackground(0, 0, 0);
-    myMap.draw(0, 0);
+    
+    if(derivative)
+        myMap.drawDerivative(0, 0);
+    else if(wireframe)
+        myMap.drawWireframe(0, 0);
+    else
+        myMap.draw(0, 0);
 }
 
 //--------------------------------------------------------------
@@ -46,9 +55,10 @@ void testApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
+    static bool drawUI = true;
     switch(key)
     {
-        case 'w': case 'W': wireframe = !wireframe; break;
+        case 'g': case 'G': gui.setAutoDraw(drawUI = !drawUI); break;
     }
 }
 
