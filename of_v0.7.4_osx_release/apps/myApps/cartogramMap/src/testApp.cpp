@@ -14,7 +14,7 @@ void testApp::setup(){
     latLngBounds.bottom = 20.627166666666668;
     latLngBounds.top    = 52.312333333333335;
     
-    myMap.load(latLngBounds, "../../../../../../data/photos.distortion.128.dat");
+    myMap.load(latLngBounds, "../../../../../../data/photos.distortion.128.dat", "../../../../../../www/photos.json");
     
     ofSetWindowPosition(0, 0);
     //ofSetWindowShape(ofGetScreenWidth(), ofGetScreenHeight());
@@ -64,7 +64,7 @@ void testApp::keyReleased(int key){
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y){
     string name = "derivative: " + vec2string(myMap.derivativeAtScreenCoord(x, y));
-    cout << name << endl;
+    //cout << name << endl;
     
 }
 

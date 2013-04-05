@@ -227,12 +227,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/DistortedMap.cpp"
-         timestampString = "386797403.554898"
+         timestampString = "386888788.616409"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "70"
          endingLineNumber = "70"
-         landmarkName = "DistortedMap::load(Bounds&lt;float&gt; bounds, std::string filename)"
+         landmarkName = "DistortedMap::load(Bounds&lt;float&gt; bounds, std::string distortionFilename, std::string photosFilename)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -240,11 +240,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/DistortedMap.cpp"
-         timestampString = "386797403.554898"
+         timestampString = "386894259.693175"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "141"
-         endingLineNumber = "141"
+         startingLineNumber = "153"
+         endingLineNumber = "153"
          landmarkName = "DistortedMap::draw(float x, float y)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -285,6 +285,19 @@
          startingLineNumber = "67"
          endingLineNumber = "67"
          landmarkName = "testApp::mouseMoved(int x, int y)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/DistortedMap.cpp"
+         timestampString = "386894548.615678"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "118"
+         endingLineNumber = "118"
+         landmarkName = "DistortedMap::lngLatToScreen(ofVec2f lngLat)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

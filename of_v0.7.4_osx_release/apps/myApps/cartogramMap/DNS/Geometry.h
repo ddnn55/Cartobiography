@@ -1,13 +1,13 @@
 //
-//  Bounds.h
+//  Geometry.h
 //  emptyExample
 //
-//  Created by David Stolarsky on 3/6/13.
+//  Created by David Stolarsky on 4/5/13.
 //
 //
 
-#ifndef __emptyExample__Bounds__
-#define __emptyExample__Bounds__
+#ifndef __emptyExample__Geometry__
+#define __emptyExample__Geometry__
 
 #include <ofMain.h>
 
@@ -50,4 +50,12 @@ public:
     }
 };
 
-#endif /* defined(__emptyExample__Bounds__) */
+namespace DNS
+{
+    namespace Geometry
+    {
+        ofVec2f MapBounds(ofVec2f fromPoint, Bounds<float> fromBounds, Bounds<float> toBounds);
+    }
+}
+
+#endif /* defined(__emptyExample__Geometry__) */

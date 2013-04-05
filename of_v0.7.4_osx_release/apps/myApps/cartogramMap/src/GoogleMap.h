@@ -11,7 +11,7 @@
 
 #include <ofMain.h>
 
-#include "Bounds.h"
+#include "DNS/Geometry.h"
 
 #include <set>
 
@@ -23,6 +23,8 @@ public:
     
     void setLatLngBounds(const Bounds<float> & bounds);
     void setScreenBounds(Bounds<float> screenBounds);
+    
+    Bounds<float> getLatLngBounds() { return latLngBounds; };
     
     void draw(float x, float y);
     

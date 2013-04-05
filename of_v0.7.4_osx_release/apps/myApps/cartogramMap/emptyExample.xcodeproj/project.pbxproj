@@ -9,8 +9,13 @@
 /* Begin PBXBuildFile section */
 		1312554616E6AF9600338F15 /* DistortedMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1312554416E6AF9600338F15 /* DistortedMap.cpp */; };
 		1312554916E6C11400338F15 /* GoogleMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1312554716E6C11400338F15 /* GoogleMap.cpp */; };
-		1312554C16E81C9A00338F15 /* Bounds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1312554A16E81C9A00338F15 /* Bounds.cpp */; };
 		13E64FD3170E03C800535EB3 /* CBUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E64FD1170E03C800535EB3 /* CBUtil.cpp */; };
+		13E64FD7170F716C00535EB3 /* ofxJSONElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E64FD5170F716C00535EB3 /* ofxJSONElement.cpp */; };
+		13E64FED170F719300535EB3 /* json_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E64FE8170F719300535EB3 /* json_reader.cpp */; };
+		13E64FEE170F719300535EB3 /* json_value.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E64FE9170F719300535EB3 /* json_value.cpp */; };
+		13E64FEF170F719300535EB3 /* json_writer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E64FEB170F719300535EB3 /* json_writer.cpp */; };
+		13E64FF2170F73D900535EB3 /* Photo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E64FF0170F73D900535EB3 /* Photo.cpp */; };
+		13E64FF5170F87DD00535EB3 /* Geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E64FF3170F87DD00535EB3 /* Geometry.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -68,8 +73,6 @@
 		1312554516E6AF9600338F15 /* DistortedMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistortedMap.h; sourceTree = "<group>"; };
 		1312554716E6C11400338F15 /* GoogleMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GoogleMap.cpp; sourceTree = "<group>"; };
 		1312554816E6C11400338F15 /* GoogleMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleMap.h; sourceTree = "<group>"; };
-		1312554A16E81C9A00338F15 /* Bounds.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Bounds.cpp; sourceTree = "<group>"; };
-		1312554B16E81C9A00338F15 /* Bounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bounds.h; sourceTree = "<group>"; };
 		1312554E16EFC2F600338F15 /* CBDebug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CBDebug.h; sourceTree = "<group>"; };
 		1312556116F13CDB00338F15 /* distort.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = distort.frag; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
 		1312556216F13CDB00338F15 /* distort.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = distort.vert; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
@@ -119,6 +122,27 @@
 		13E64FD0170DD83D00535EB3 /* ofxUIWidgetWithLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIWidgetWithLabel.h; sourceTree = "<group>"; };
 		13E64FD1170E03C800535EB3 /* CBUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBUtil.cpp; sourceTree = "<group>"; };
 		13E64FD2170E03C800535EB3 /* CBUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBUtil.h; sourceTree = "<group>"; };
+		13E64FD5170F716C00535EB3 /* ofxJSONElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxJSONElement.cpp; path = ofxJSON/src/ofxJSONElement.cpp; sourceTree = "<group>"; };
+		13E64FD6170F716C00535EB3 /* ofxJSONElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxJSONElement.h; path = ofxJSON/src/ofxJSONElement.h; sourceTree = "<group>"; };
+		13E64FDB170F718B00535EB3 /* autolink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = autolink.h; sourceTree = "<group>"; };
+		13E64FDC170F718B00535EB3 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		13E64FDD170F718B00535EB3 /* features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = features.h; sourceTree = "<group>"; };
+		13E64FDE170F718B00535EB3 /* forwards.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forwards.h; sourceTree = "<group>"; };
+		13E64FDF170F718B00535EB3 /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json.h; sourceTree = "<group>"; };
+		13E64FE0170F718B00535EB3 /* reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reader.h; sourceTree = "<group>"; };
+		13E64FE1170F718B00535EB3 /* value.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = value.h; sourceTree = "<group>"; };
+		13E64FE2170F718B00535EB3 /* writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = writer.h; sourceTree = "<group>"; };
+		13E64FE5170F719300535EB3 /* json_batchallocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = json_batchallocator.h; path = ofxJSON/libs/src/lib_json/json_batchallocator.h; sourceTree = "<group>"; };
+		13E64FE6170F719300535EB3 /* json_internalarray.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = json_internalarray.inl; path = ofxJSON/libs/src/lib_json/json_internalarray.inl; sourceTree = "<group>"; };
+		13E64FE7170F719300535EB3 /* json_internalmap.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = json_internalmap.inl; path = ofxJSON/libs/src/lib_json/json_internalmap.inl; sourceTree = "<group>"; };
+		13E64FE8170F719300535EB3 /* json_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = json_reader.cpp; path = ofxJSON/libs/src/lib_json/json_reader.cpp; sourceTree = "<group>"; };
+		13E64FE9170F719300535EB3 /* json_value.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = json_value.cpp; path = ofxJSON/libs/src/lib_json/json_value.cpp; sourceTree = "<group>"; };
+		13E64FEA170F719300535EB3 /* json_valueiterator.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = json_valueiterator.inl; path = ofxJSON/libs/src/lib_json/json_valueiterator.inl; sourceTree = "<group>"; };
+		13E64FEB170F719300535EB3 /* json_writer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = json_writer.cpp; path = ofxJSON/libs/src/lib_json/json_writer.cpp; sourceTree = "<group>"; };
+		13E64FF0170F73D900535EB3 /* Photo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Photo.cpp; sourceTree = "<group>"; };
+		13E64FF1170F73D900535EB3 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
+		13E64FF3170F87DD00535EB3 /* Geometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Geometry.cpp; path = DNS/Geometry.cpp; sourceTree = SOURCE_ROOT; };
+		13E64FF4170F87DD00535EB3 /* Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Geometry.h; path = DNS/Geometry.h; sourceTree = SOURCE_ROOT; };
 		BAFAF333170CA78900611E68 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -251,6 +275,55 @@
 			path = ofxUI/src;
 			sourceTree = "<group>";
 		};
+		13E64FD4170F716200535EB3 /* ofxJSON */ = {
+			isa = PBXGroup;
+			children = (
+				13E64FD8170F717400535EB3 /* lib_json */,
+				13E64FD5170F716C00535EB3 /* ofxJSONElement.cpp */,
+				13E64FD6170F716C00535EB3 /* ofxJSONElement.h */,
+			);
+			name = ofxJSON;
+			sourceTree = "<group>";
+		};
+		13E64FD8170F717400535EB3 /* lib_json */ = {
+			isa = PBXGroup;
+			children = (
+				13E64FE5170F719300535EB3 /* json_batchallocator.h */,
+				13E64FE6170F719300535EB3 /* json_internalarray.inl */,
+				13E64FE7170F719300535EB3 /* json_internalmap.inl */,
+				13E64FE8170F719300535EB3 /* json_reader.cpp */,
+				13E64FE9170F719300535EB3 /* json_value.cpp */,
+				13E64FEA170F719300535EB3 /* json_valueiterator.inl */,
+				13E64FEB170F719300535EB3 /* json_writer.cpp */,
+				13E64FD9170F718B00535EB3 /* include */,
+			);
+			name = lib_json;
+			sourceTree = "<group>";
+		};
+		13E64FD9170F718B00535EB3 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				13E64FDA170F718B00535EB3 /* json */,
+			);
+			name = include;
+			path = ofxJSON/libs/include;
+			sourceTree = "<group>";
+		};
+		13E64FDA170F718B00535EB3 /* json */ = {
+			isa = PBXGroup;
+			children = (
+				13E64FDB170F718B00535EB3 /* autolink.h */,
+				13E64FDC170F718B00535EB3 /* config.h */,
+				13E64FDD170F718B00535EB3 /* features.h */,
+				13E64FDE170F718B00535EB3 /* forwards.h */,
+				13E64FDF170F718B00535EB3 /* json.h */,
+				13E64FE0170F718B00535EB3 /* reader.h */,
+				13E64FE1170F718B00535EB3 /* value.h */,
+				13E64FE2170F718B00535EB3 /* writer.h */,
+			);
+			path = json;
+			sourceTree = "<group>";
+		};
 		BAFAF332170CA77200611E68 /* doc */ = {
 			isa = PBXGroup;
 			children = (
@@ -262,6 +335,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				13E64FD4170F716200535EB3 /* ofxJSON */,
 				13E64FA4170DD83C00535EB3 /* ofxUI */,
 			);
 			name = addons;
@@ -339,11 +413,13 @@
 				1312554516E6AF9600338F15 /* DistortedMap.h */,
 				1312554716E6C11400338F15 /* GoogleMap.cpp */,
 				1312554816E6C11400338F15 /* GoogleMap.h */,
-				1312554A16E81C9A00338F15 /* Bounds.cpp */,
-				1312554B16E81C9A00338F15 /* Bounds.h */,
 				1312554E16EFC2F600338F15 /* CBDebug.h */,
 				13E64FD1170E03C800535EB3 /* CBUtil.cpp */,
 				13E64FD2170E03C800535EB3 /* CBUtil.h */,
+				13E64FF0170F73D900535EB3 /* Photo.cpp */,
+				13E64FF1170F73D900535EB3 /* Photo.h */,
+				13E64FF3170F87DD00535EB3 /* Geometry.cpp */,
+				13E64FF4170F87DD00535EB3 /* Geometry.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -445,8 +521,13 @@
 				E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */,
 				1312554616E6AF9600338F15 /* DistortedMap.cpp in Sources */,
 				1312554916E6C11400338F15 /* GoogleMap.cpp in Sources */,
-				1312554C16E81C9A00338F15 /* Bounds.cpp in Sources */,
 				13E64FD3170E03C800535EB3 /* CBUtil.cpp in Sources */,
+				13E64FD7170F716C00535EB3 /* ofxJSONElement.cpp in Sources */,
+				13E64FED170F719300535EB3 /* json_reader.cpp in Sources */,
+				13E64FEE170F719300535EB3 /* json_value.cpp in Sources */,
+				13E64FEF170F719300535EB3 /* json_writer.cpp in Sources */,
+				13E64FF2170F73D900535EB3 /* Photo.cpp in Sources */,
+				13E64FF5170F87DD00535EB3 /* Geometry.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -549,6 +630,12 @@
 				GCC_MODEL_TUNING = NONE;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					"$(OF_CORE_HEADERS)",
+					src,
+					ofxJSON/libs/include,
+					.,
+				);
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
@@ -637,6 +724,12 @@
 				GCC_MODEL_TUNING = NONE;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					"$(OF_CORE_HEADERS)",
+					src,
+					ofxJSON/libs/include,
+					.,
+				);
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (

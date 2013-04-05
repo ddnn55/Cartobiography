@@ -12,8 +12,10 @@
 
 #include "DistortedMap.h"
 
+#include "ofxJSONElement.h"
 
-void DistortedMap::load(Bounds<float> bounds, std::string filename)
+
+void DistortedMap::load(Bounds<float> bounds, std::string distortionFilename, std::string photosFilename)
 {
     ofSetLogLevel(OF_LOG_VERBOSE);
     
@@ -27,14 +29,18 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
     
     gMap.load(4, bounds);
     
-    ofFile file(filename);
+    ofFile file(distortionFilename);
     ofBuffer contents = file.readToBuffer();
     std::string line;
     
-    float* data = new float[(CARTOGRAM_GRID_SIZE+1) * (CARTOGRAM_GRID_SIZE+1) * 3];
+    ofxJSONElement photosJSON;
+    photosJSON.open(photosFilename);
+    for(int p = 0; p < photosJSON.size(); p++)
+    {
+        photos.push_back( Photo( photosJSON[p] ) );
+    }
     
     distortion.allocate(CARTOGRAM_GRID_SIZE+1, CARTOGRAM_GRID_SIZE+1, OF_IMAGE_COLOR);
-    //distortion.loadData(data, (CARTOGRAM_GRID_SIZE+1), (CARTOGRAM_GRID_SIZE+1), GL_RGB);
     
     for(int y = CARTOGRAM_GRID_SIZE; y >= 0; y--)
     {
@@ -48,47 +54,44 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
             
             distortedX /= float(CARTOGRAM_GRID_SIZE);
             distortedY /= float(CARTOGRAM_GRID_SIZE);
-            
-            data[ 3 * (y * (CARTOGRAM_GRID_SIZE+1) + x)     ] = distortedX;
-            data[ 3 * (y * (CARTOGRAM_GRID_SIZE+1) + x) + 1 ] = distortedY;
-            
+                        
             distortion.getPixelsRef().setColor(x, y, ofFloatColor(distortedX, distortedY, 0.0, 1.0));
+            
             
         }
     }
     
     
-    //distortion.allocate(CARTOGRAM_GRID_SIZE+1, CARTOGRAM_GRID_SIZE+1, GL_RGB32F);
-    //distortion.loadData(data, (CARTOGRAM_GRID_SIZE+1), (CARTOGRAM_GRID_SIZE+1), GL_RGB);
     distortion.update();
-    
-    delete[] data;
-    
+       
     
     ofPoint distortionSE = distortion.getTextureReference().getCoordFromPercent(1, 1);
     
     for(int y = 0; y < CARTOGRAM_GRID_SIZE+1; y++)
     {
         std::vector< ofVec3f > vertices;
-        //std::vector< ofVec2f > texCoords;
+        std::vector< ofFloatColor > colors;
         for(int x = 0; x < CARTOGRAM_GRID_SIZE+1; x++)
         {
             vertices.push_back(ofVec3f(x, y, 0.0));
+            //colors.push_back(ofFloatColor(distortion.getPixelsRef().getColor(x, y),                                          ));
+            
             //texCoords.push_back(ofVec2f(distortionSE.x * float(x) / float(CARTOGRAM_GRID_SIZE),
             //                            distortionSE.y * float(y) / float(CARTOGRAM_GRID_SIZE)));
             
-            if(y > 0 && x < CARTOGRAM_GRID_SIZE)
+            if(y > 0 && x > 0)
             {
                 mesh.addTriangle((y-1) * (CARTOGRAM_GRID_SIZE+1) + x,
-                                 (y-1) * (CARTOGRAM_GRID_SIZE+1) + x+1,
+                                 (y-1) * (CARTOGRAM_GRID_SIZE+1) + x-1,
                                  (y  ) * (CARTOGRAM_GRID_SIZE+1) + x);
                 
-                mesh.addTriangle((y-1) * (CARTOGRAM_GRID_SIZE+1) + x+1,
-                                 (y  ) * (CARTOGRAM_GRID_SIZE+1) + x+1,
+                mesh.addTriangle((y-1) * (CARTOGRAM_GRID_SIZE+1) + x-1,
+                                 (y  ) * (CARTOGRAM_GRID_SIZE+1) + x-1,
                                  (y  ) * (CARTOGRAM_GRID_SIZE+1) + x);
             }
         }
         mesh.addVertices(vertices);
+        mesh.addColors(colors);
     }
     
     shader.begin();
@@ -101,8 +104,18 @@ void DistortedMap::load(Bounds<float> bounds, std::string filename)
 ofVec2f DistortedMap::derivativeAtScreenCoord(int x, int y)
 {
     ofVec2f gridCoord ( CARTOGRAM_GRID_SIZE * float(x) / float(ofGetWidth()), CARTOGRAM_GRID_SIZE * float(y) / float(ofGetHeight()));
-    //ofVec2f derivative(  );
+    //ofVec2f derivative( distortion.getColor(x, y) - distortion.getColor(x-1, y), distortion.getColor(x, y) - distortion.getColor(x-1, y) );
     return gridCoord;
+}
+
+Bounds<float> DistortedMap::screenBounds()
+{
+    return Bounds<float>(0, ofGetWidth(), 0, ofGetHeight());
+}
+
+ofVec2f DistortedMap::lngLatToScreen(ofVec2f lngLat)
+{
+    return DNS::Geometry::MapBounds(lngLat, gMap.getLatLngBounds(), screenBounds());
 }
 
 void DistortedMap::drawWireframe(float x, float y)
@@ -127,7 +140,6 @@ void DistortedMap::drawDerivative(float x, float y)
 
 void DistortedMap::draw(float x, float y)
 {
-    
     ofSetColor(255);
     
     shader.begin();
@@ -155,4 +167,20 @@ void DistortedMap::draw(float x, float y)
     glPopMatrix();
     
     shader.end();
+    
+    drawPhotos();
+}
+
+void DistortedMap::drawPhotos()
+{
+    int numPhotos = 20;
+    
+    for(int p = 0; p < photos.size(); p += 1 /* photos.size() / numPhotos*/)
+    {
+        glPushMatrix();
+            ofVec2f pos = lngLatToScreen( photos[p].lngLat() );
+            ofTranslate(pos.x, pos.y);
+            photos[p].draw();
+        glPopMatrix();
+    }
 }

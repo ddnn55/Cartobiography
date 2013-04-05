@@ -12,13 +12,18 @@
 #include <iostream>
 #include <vector>
 
-#include "Bounds.h"
+#include "DNS/Geometry.h"
 #include "GoogleMap.h"
+#include "Photo.h"
 
 class DistortedMap {
 public:
     DistortedMap() {};
-    void load(Bounds<float> bounds, std::string filename);
+    void load(Bounds<float> bounds, std::string filename, std::string photosFilename);
+    
+    Bounds<float> screenBounds();
+    
+    ofVec2f lngLatToScreen(ofVec2f lngLat);
     
     void draw(float x, float y);
     void drawWireframe(float x, float y);
@@ -30,6 +35,10 @@ public:
     GoogleMap gMap;
     
 private:
+    
+    void drawPhotos();
+    
+    vector< Photo > photos;
     ofFloatImage distortion;
     //ofTexture distortion;
     

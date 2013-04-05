@@ -14,7 +14,7 @@
 
 #include <ofMain.h>
 
-#include "Bounds.h"
+#include "DNS/Geometry.h"
 
 void CBLog(std::string msg)
 {
