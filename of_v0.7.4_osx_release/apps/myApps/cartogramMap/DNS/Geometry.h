@@ -19,6 +19,11 @@ public:
     T top;
     T bottom;
     
+    static Bounds<T> normalBounds()
+    {
+        return Bounds<T>(0.0, 1.0, 1.0, 0.0);
+    };
+    
     Bounds()
     {
         left = right = top = bottom = 0;
@@ -54,7 +59,8 @@ namespace DNS
 {
     namespace Geometry
     {
-        ofVec2f MapBounds(ofVec2f fromPoint, Bounds<float> fromBounds, Bounds<float> toBounds);
+        ofVec2f Map(ofVec2f fromPoint, Bounds<float> fromBounds, Bounds<float> toBounds);
+        ofVec2f Normalize(ofVec2f point, Bounds<float> inBounds);
     }
 }
 

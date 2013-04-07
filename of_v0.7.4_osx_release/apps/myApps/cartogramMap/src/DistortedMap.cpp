@@ -115,7 +115,15 @@ Bounds<float> DistortedMap::screenBounds()
 
 ofVec2f DistortedMap::lngLatToScreen(ofVec2f lngLat)
 {
-    return DNS::Geometry::MapBounds(lngLat, gMap.getLatLngBounds(), screenBounds());
+    ofVec2f undistortedNormalPos = DNS::Geometry::Normalize(lngLat, gMap.getLatLngBounds());
+    ofVec2f distortionGridPos = DNS::Geometry::Map(lngLat, gMap.getLatLngBounds(), gridBounds());
+    
+    ofVec2f gridDistortedPos = DNS::Image::Sample(distortionGridPos, distortion);
+    
+    
+    ofVec2f interpolatedPos = DNS::Geometry::InterpolateLinear(normalDistortedPos, );
+    
+    return DNS::Geometry::Map(lngLat, gMap.getLatLngBounds(), screenBounds());
 }
 
 void DistortedMap::drawWireframe(float x, float y)
