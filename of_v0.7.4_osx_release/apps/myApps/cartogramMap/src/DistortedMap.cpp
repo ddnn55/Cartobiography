@@ -207,15 +207,22 @@ void DistortedMap::drawPhotos()
         
         Vec2f photoBottomLeft(pos.x - imageSize, pos.y - imageSize);
         Vec2f photoTopRight(pos.x + imageSize, pos.y + imageSize);
-        qdt::QuadTreeOccupant* photoQTOccupant = new qdt::QuadTreeOccupant();
-        photoQTOccupant->aabb = qdt::AABB(photoBottomLeft, photoTopRight);
-        qt.AddOccupant(photoQTOccupant);
-        occupants[p] = photoQTOccupant;
         
-        glPushMatrix();
-            ofTranslate(pos.x, pos.y);
-            photos[p].draw(imageSize);
-        glPopMatrix();
+        std::vector<qdt::QuadTreeOccupant *> result;
+        qt.Query(qdt::AABB(photoBottomLeft, photoTopRight), result);
+        
+        if(result.size() == 0)
+        {
+            qdt::QuadTreeOccupant* photoQTOccupant = new qdt::QuadTreeOccupant();
+            photoQTOccupant->aabb = qdt::AABB(photoBottomLeft, photoTopRight);
+            qt.AddOccupant(photoQTOccupant);
+            occupants[p] = photoQTOccupant;
+            
+            glPushMatrix();
+                ofTranslate(pos.x, pos.y);
+                photos[p].draw(imageSize);
+            glPopMatrix();
+        }
     }
     
     if(renderQuadTree)
