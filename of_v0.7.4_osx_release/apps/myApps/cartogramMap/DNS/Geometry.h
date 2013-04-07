@@ -61,6 +61,18 @@ namespace DNS
     {
         ofVec2f Map(ofVec2f fromPoint, Bounds<float> fromBounds, Bounds<float> toBounds);
         ofVec2f Normalize(ofVec2f point, Bounds<float> inBounds);
+        float   InterpolateLinear(float a, float b, float amount);
+        ofVec2f InterpolateLinear(ofVec2f a, ofVec2f b, float amount);
+    }
+    
+    namespace Color
+    {
+        ofFloatColor InterpolateLinear(ofFloatColor a, ofFloatColor b, float amount);
+    }
+    
+    namespace Image
+    {
+        ofFloatColor Sample(const ofFloatImage & image, ofVec2f pixelCoordinate);
     }
 }
 

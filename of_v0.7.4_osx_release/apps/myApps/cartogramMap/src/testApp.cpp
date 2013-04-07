@@ -32,7 +32,7 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update(){
-
+    myMap.distortionAmount = float(ofGetMouseX()) / float(ofGetWidth());
 }
 
 //--------------------------------------------------------------
@@ -65,6 +65,8 @@ void testApp::keyReleased(int key){
 void testApp::mouseMoved(int x, int y){
     string name = "derivative: " + vec2string(myMap.derivativeAtScreenCoord(x, y));
     //cout << name << endl;
+    
+    myMap.distortionAmount = float(ofGetMouseX()) / float(ofGetWidth());
     
 }
 

@@ -18,7 +18,7 @@
 
 class DistortedMap {
 public:
-    DistortedMap() {};
+    DistortedMap() { distortionAmount = 0.0; };
     void load(Bounds<float> bounds, std::string filename, std::string photosFilename);
     
     Bounds<float> screenBounds();
@@ -34,7 +34,11 @@ public:
     
     GoogleMap gMap;
     
+    float distortionAmount;
+    
 private:
+    
+    Bounds<float> gridBounds();
     
     void drawPhotos();
     

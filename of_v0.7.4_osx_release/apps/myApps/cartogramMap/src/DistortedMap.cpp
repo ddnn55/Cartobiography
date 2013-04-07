@@ -55,8 +55,8 @@ void DistortedMap::load(Bounds<float> bounds, std::string distortionFilename, st
             distortedX /= float(CARTOGRAM_GRID_SIZE);
             distortedY /= float(CARTOGRAM_GRID_SIZE);
                         
-            distortion.getPixelsRef().setColor(x, y, ofFloatColor(distortedX, distortedY, 0.0, 1.0));
-            
+            ofFloatColor color(distortedX, distortedY, 0.0, 1.0);
+            distortion.getPixelsRef().setColor(x, y, color);
             
         }
     }
@@ -113,17 +113,28 @@ Bounds<float> DistortedMap::screenBounds()
     return Bounds<float>(0, ofGetWidth(), 0, ofGetHeight());
 }
 
+Bounds<float> DistortedMap::gridBounds()
+{
+    return Bounds<float>(0, CARTOGRAM_GRID_SIZE+1, 0, CARTOGRAM_GRID_SIZE+1);
+}
+
 ofVec2f DistortedMap::lngLatToScreen(ofVec2f lngLat)
 {
     ofVec2f undistortedNormalPos = DNS::Geometry::Normalize(lngLat, gMap.getLatLngBounds());
+    
+    
     ofVec2f distortionGridPos = DNS::Geometry::Map(lngLat, gMap.getLatLngBounds(), gridBounds());
     
-    ofVec2f gridDistortedPos = DNS::Image::Sample(distortionGridPos, distortion);
+    ofFloatColor gridDistortedPosSample = DNS::Image::Sample(distortion, distortionGridPos);
+    ofVec2f normalDistortedPos(gridDistortedPosSample.r, gridDistortedPosSample.g);
     
+    //ofVec2f normalDistortedPos = DNS::Geometry::Normalize(gridDistortedPos, gridBounds());
     
-    ofVec2f interpolatedPos = DNS::Geometry::InterpolateLinear(normalDistortedPos, );
+    ofVec2f normalInterpolatedPos = DNS::Geometry::InterpolateLinear(normalDistortedPos, undistortedNormalPos, distortionAmount);
     
-    return DNS::Geometry::Map(lngLat, gMap.getLatLngBounds(), screenBounds());
+     
+    return DNS::Geometry::Map(normalInterpolatedPos, Bounds<float>::normalBounds(), screenBounds());
+    //return DNS::Geometry::Map(lngLat, gMap.getLatLngBounds(), screenBounds());
 }
 
 void DistortedMap::drawWireframe(float x, float y)
@@ -161,7 +172,7 @@ void DistortedMap::draw(float x, float y)
     shader.setUniform2f("distortionSize", distortionSE.x, distortionSE.y);
     shader.setUniform2f("meshSize", (CARTOGRAM_GRID_SIZE+1), (CARTOGRAM_GRID_SIZE+1));
     
-    shader.setUniform1f("normalMouseX", float(ofGetMouseX()) / float(ofGetWidth()));
+    shader.setUniform1f("normalMouseX", distortionAmount);
     
     float aspect = gMap.map.width / gMap.map.height;
     float scaleX = float(ofGetWidth()) / float(CARTOGRAM_GRID_SIZE+1);
