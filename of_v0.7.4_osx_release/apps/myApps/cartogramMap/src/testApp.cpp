@@ -27,6 +27,7 @@ void testApp::setup(){
     gui.addSpacer();
     //derivativeLabel = gui.addLabel("derivative: ");
     gui.addSlider("image size", 5.0, 100.0, &myMap.imageSize);
+    gui.addToggle("render quadtree", &myMap.renderQuadTree);
     
     gui.autoSizeToFitWidgets();
 }

@@ -18,7 +18,7 @@
 
 class DistortedMap {
 public:
-    DistortedMap() { distortionAmount = 0.0; imageSize = 5.0; };
+    DistortedMap() { distortionAmount = 0.0; imageSize = 5.0; renderQuadTree = false; };
     void load(Bounds<float> bounds, std::string filename, std::string photosFilename);
     
     Bounds<float> screenBounds();
@@ -36,6 +36,7 @@ public:
     
     float distortionAmount;
     float imageSize;
+    bool renderQuadTree;
     
 private:
     

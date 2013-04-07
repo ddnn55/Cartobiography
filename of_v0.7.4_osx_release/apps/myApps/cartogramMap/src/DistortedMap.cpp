@@ -218,7 +218,8 @@ void DistortedMap::drawPhotos()
         glPopMatrix();
     }
     
-    qt.DebugRender();
+    if(renderQuadTree)
+        qt.DebugRender();
     
     for(int p = 0; p < photos.size(); p++)
     {
