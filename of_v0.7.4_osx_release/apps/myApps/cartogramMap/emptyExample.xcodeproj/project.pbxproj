@@ -19,6 +19,7 @@
 		BAFAF34D1711FF4A00611E68 /* QuadTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAFAF34A1711FF4A00611E68 /* QuadTree.cpp */; };
 		BAFAF34E1711FF4A00611E68 /* QuadTreeNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAFAF34B1711FF4A00611E68 /* QuadTreeNode.cpp */; };
 		BAFAF34F1711FF4A00611E68 /* QuadTreeOccupant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAFAF34C1711FF4A00611E68 /* QuadTreeOccupant.cpp */; };
+		BAFAF3511712031F00611E68 /* Constructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAFAF3501712031F00611E68 /* Constructs.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -150,6 +151,7 @@
 		BAFAF34A1711FF4A00611E68 /* QuadTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QuadTree.cpp; path = light/src/QuadTree.cpp; sourceTree = "<group>"; };
 		BAFAF34B1711FF4A00611E68 /* QuadTreeNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QuadTreeNode.cpp; path = light/src/QuadTreeNode.cpp; sourceTree = "<group>"; };
 		BAFAF34C1711FF4A00611E68 /* QuadTreeOccupant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QuadTreeOccupant.cpp; path = light/src/QuadTreeOccupant.cpp; sourceTree = "<group>"; };
+		BAFAF3501712031F00611E68 /* Constructs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Constructs.cpp; path = light/src/Constructs.cpp; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -341,6 +343,7 @@
 		BAFAF3491711FF3A00611E68 /* quadtree */ = {
 			isa = PBXGroup;
 			children = (
+				BAFAF3501712031F00611E68 /* Constructs.cpp */,
 				BAFAF34A1711FF4A00611E68 /* QuadTree.cpp */,
 				BAFAF34B1711FF4A00611E68 /* QuadTreeNode.cpp */,
 				BAFAF34C1711FF4A00611E68 /* QuadTreeOccupant.cpp */,
@@ -548,6 +551,7 @@
 				BAFAF34D1711FF4A00611E68 /* QuadTree.cpp in Sources */,
 				BAFAF34E1711FF4A00611E68 /* QuadTreeNode.cpp in Sources */,
 				BAFAF34F1711FF4A00611E68 /* QuadTreeOccupant.cpp in Sources */,
+				BAFAF3511712031F00611E68 /* Constructs.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

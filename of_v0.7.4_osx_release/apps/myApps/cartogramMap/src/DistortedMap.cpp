@@ -14,6 +14,8 @@
 
 #include "ofxJSONElement.h"
 
+#include "LTBL/QuadTree.h"
+
 
 void DistortedMap::load(Bounds<float> bounds, std::string distortionFilename, std::string photosFilename)
 {
@@ -191,13 +193,35 @@ void DistortedMap::draw(float x, float y)
 }
 
 void DistortedMap::drawPhotos()
-{    
+{
+    Vec2f bottemLeft(0.0, 0.0);
+    Vec2f topRight(ofGetWidth(), ofGetHeight());
+    qdt::AABB qtBounds(bottemLeft, topRight);
+    qdt::QuadTree qt(qtBounds);
+    
+    std::vector< qdt::QuadTreeOccupant* > occupants(photos.size());
+    
     for(int p = 0; p < photos.size(); p++)
     {
+        ofVec2f pos = lngLatToScreen( photos[p].lngLat() );
+        
+        Vec2f photoBottomLeft(pos.x - imageSize, pos.y - imageSize);
+        Vec2f photoTopRight(pos.x + imageSize, pos.y + imageSize);
+        qdt::QuadTreeOccupant* photoQTOccupant = new qdt::QuadTreeOccupant();
+        photoQTOccupant->aabb = qdt::AABB(photoBottomLeft, photoTopRight);
+        qt.AddOccupant(photoQTOccupant);
+        occupants[p] = photoQTOccupant;
+        
         glPushMatrix();
-            ofVec2f pos = lngLatToScreen( photos[p].lngLat() );
             ofTranslate(pos.x, pos.y);
             photos[p].draw(imageSize);
         glPopMatrix();
+    }
+    
+    qt.DebugRender();
+    
+    for(int p = 0; p < photos.size(); p++)
+    {
+        delete(occupants[p]);
     }
 }
