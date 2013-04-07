@@ -191,15 +191,13 @@ void DistortedMap::draw(float x, float y)
 }
 
 void DistortedMap::drawPhotos()
-{
-    int numPhotos = 20;
-    
-    for(int p = 0; p < photos.size(); p += 1 /* photos.size() / numPhotos*/)
+{    
+    for(int p = 0; p < photos.size(); p++)
     {
         glPushMatrix();
             ofVec2f pos = lngLatToScreen( photos[p].lngLat() );
             ofTranslate(pos.x, pos.y);
-            photos[p].draw();
+            photos[p].draw(imageSize);
         glPopMatrix();
     }
 }

@@ -18,7 +18,7 @@ public:
     
     ofVec2f lngLat();
     
-    void draw();
+    void draw(float size);
     
 private:
     ofxJSONElement json;

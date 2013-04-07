@@ -21,8 +21,8 @@ ofVec2f Photo::lngLat()
     return ofVec2f( lng.asDouble(), lat.asDouble() );
 }
 
-void Photo::draw()
+void Photo::draw(float size)
 {
     //ofRect(-10, -10, 0, 20, 20);
-    ofCircle(0, 0, 5.0);
+    ofCircle(0, 0, size);
 }
