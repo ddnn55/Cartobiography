@@ -14,7 +14,7 @@ void testApp::setup(){
     latLngBounds.bottom = 20.627166666666668;
     latLngBounds.top    = 52.312333333333335;
     
-    myMap.load(latLngBounds, "../../../../../../data/photos.distortion.128.dat", "../../../../../../www/photos.json");
+    myMap.load(latLngBounds, "../../../../../../data/photos.distortion.1024.dat", "../../../../../../www/photos.json");
     
     ofSetWindowPosition(0, 0);
     //ofSetWindowShape(ofGetScreenWidth(), ofGetScreenHeight());

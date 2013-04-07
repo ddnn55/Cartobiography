@@ -1,6 +1,6 @@
 var maxPhotos = 0,
-    minDensity = 0.2,
-    blurPower = 16;
+    minDensity = 0.01,
+    blurPower = 8;
 
 var fs = require('fs'),
     path = require('path');

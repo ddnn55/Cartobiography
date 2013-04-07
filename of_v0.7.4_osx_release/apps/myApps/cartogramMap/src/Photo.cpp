@@ -23,5 +23,6 @@ ofVec2f Photo::lngLat()
 
 void Photo::draw()
 {
-    ofRect(-10, -10, 0, 20, 20);
+    //ofRect(-10, -10, 0, 20, 20);
+    ofCircle(0, 0, 5.0);
 }

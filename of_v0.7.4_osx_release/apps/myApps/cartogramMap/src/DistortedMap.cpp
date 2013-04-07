@@ -6,7 +6,7 @@
 //
 //
 
-#define CARTOGRAM_GRID_SIZE 128
+#define CARTOGRAM_GRID_SIZE 1024
 
 #include <ofMain.h>
 
