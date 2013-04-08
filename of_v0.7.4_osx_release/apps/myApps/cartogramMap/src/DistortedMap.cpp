@@ -124,19 +124,14 @@ ofVec2f DistortedMap::lngLatToScreen(ofVec2f lngLat)
 {
     ofVec2f undistortedNormalPos = DNS::Geometry::Normalize(lngLat, gMap.getLatLngBounds());
     
-    
     ofVec2f distortionGridPos = DNS::Geometry::Map(lngLat, gMap.getLatLngBounds(), gridBounds());
     
     ofFloatColor gridDistortedPosSample = DNS::Image::Sample(distortion, distortionGridPos);
     ofVec2f normalDistortedPos(gridDistortedPosSample.r, gridDistortedPosSample.g);
     
-    //ofVec2f normalDistortedPos = DNS::Geometry::Normalize(gridDistortedPos, gridBounds());
-    
     ofVec2f normalInterpolatedPos = DNS::Geometry::InterpolateLinear(normalDistortedPos, undistortedNormalPos, distortionAmount);
-    
      
     return DNS::Geometry::Map(normalInterpolatedPos, Bounds<float>::normalBounds(), screenBounds());
-    //return DNS::Geometry::Map(lngLat, gMap.getLatLngBounds(), screenBounds());
 }
 
 void DistortedMap::drawWireframe(float x, float y)
@@ -211,9 +206,20 @@ void DistortedMap::drawPhotos()
         std::vector<qdt::QuadTreeOccupant *> result;
         qt.Query(qdt::AABB(photoBottomLeft, photoTopRight), result);
         
-        if(result.size() == 0)
+        bool overlap = false;
+        for(int o = 0; o < result.size(); o++)
+        {
+            Photo* nearbyPhoto = (Photo*) result[o]->userData;
+            if (ofDist(pos.x, pos.y, result[o]->aabb.GetCenter().x, result[o]->aabb.GetCenter().y) < 2.0 * imageSize) {
+                overlap = true;
+                break;
+            }
+        }
+        
+        if(!overlap)
         {
             qdt::QuadTreeOccupant* photoQTOccupant = new qdt::QuadTreeOccupant();
+            photoQTOccupant->userData = (void*) & photos[p];
             photoQTOccupant->aabb = qdt::AABB(photoBottomLeft, photoTopRight);
             qt.AddOccupant(photoQTOccupant);
             occupants[p] = photoQTOccupant;

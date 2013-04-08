@@ -47,6 +47,7 @@ namespace qdt
 
 	public:
 		AABB aabb;
+        void* userData;
 
 	public:
 		QuadTreeOccupant();

@@ -26,9 +26,23 @@ void Photo::draw(float size)
 {
     if(!loadedImage)
     {
-        image.loadImage(json.get("path", Json::nullValue).asString());
+        std::string imagePath = json.get("path", Json::nullValue).asString();
+        image.loadImage(imagePath);
         loadedImage = true;
     }
+        
+    float scale;
+    if(image.width < image.height)
+        scale = 2.0 * size / float(image.width);
+    else
+        scale = 2.0 * size / float(image.height);
     
-    ofCircle(0, 0, size);
+    ofSetColor(255, 255, 255, 255);
+    ofPushMatrix();
+        ofScale(scale, scale);
+        image.draw(-image.width/2, -image.height/2, image.width, image.height);
+    ofPopMatrix();
+    
+    ofSetColor(255, 255, 255, 180);
+    //ofCircle(0, 0, size);
 }
