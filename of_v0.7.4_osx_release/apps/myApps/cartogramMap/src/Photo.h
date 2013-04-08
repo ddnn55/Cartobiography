@@ -22,6 +22,8 @@ public:
     
 private:
     ofxJSONElement json;
+    ofImage image;
+    bool loadedImage;
 };
 
 #endif /* defined(__emptyExample__Photo__) */

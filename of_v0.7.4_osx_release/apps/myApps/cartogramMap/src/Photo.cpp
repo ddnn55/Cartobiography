@@ -11,6 +11,7 @@
 Photo::Photo(ofxJSONElement photoJSON)
 {
     this->json = photoJSON;
+    loadedImage = false;
 }
 
 ofVec2f Photo::lngLat()
@@ -23,6 +24,11 @@ ofVec2f Photo::lngLat()
 
 void Photo::draw(float size)
 {
-    //ofRect(-10, -10, 0, 20, 20);
+    if(!loadedImage)
+    {
+        image.loadImage(json.get("path", Json::nullValue).asString());
+        loadedImage = true;
+    }
+    
     ofCircle(0, 0, size);
 }
