@@ -18,7 +18,7 @@
 
 class DistortedMap {
 public:
-    DistortedMap() { distortionAmount = 0.0; imageSize = 5.0; renderQuadTree = false; };
+    DistortedMap() { distortionAmount = 0.0; imageSize = 5.0; renderQuadTree = false; clicked = false; };
     void load(Bounds<float> bounds, std::string filename, std::string photosFilename);
     
     Bounds<float> screenBounds();
@@ -38,10 +38,14 @@ public:
     float imageSize;
     bool renderQuadTree;
     
+    ofVec2f mousePos;
+    bool clicked;
+    
 private:
     
     Bounds<float> gridBounds();
     
+    ofShader imageShader;
     void drawPhotos();
     
     vector< Photo > photos;

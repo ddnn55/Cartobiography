@@ -17,12 +17,16 @@ public:
     Photo(ofxJSONElement photoJSON);
     
     ofVec2f lngLat();
+    std::string filePath();
     
-    void draw(float size);
+    void draw(float size, ofShader & shader);
+    
+    void launch();
     
 private:
     ofxJSONElement json;
     ofImage image;
+    float aspect;
     bool loadedImage;
 };
 

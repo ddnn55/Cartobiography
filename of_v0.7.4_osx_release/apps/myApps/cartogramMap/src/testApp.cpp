@@ -14,13 +14,16 @@ void testApp::setup(){
     latLngBounds.bottom = 20.627166666666668;
     latLngBounds.top    = 52.312333333333335;
     
-    myMap.load(latLngBounds, "../../../../../../data/photos-stronger.distortion.1024.dat", "../../../../../../www/photos.json");
+    myMap.load(latLngBounds, "../../../../../../data/photos-blur2-min0.001.distortion.1024.dat", "../../../../../../www/photos.json");
     
     ofSetWindowPosition(0, 0);
     //ofSetWindowShape(ofGetScreenWidth(), ofGetScreenHeight());
     ofSetWindowShape(myMap.gMap.map.width, myMap.gMap.map.height);
     
     gui.addLabel("'g' -- toggle GUI display");
+    gui.addSlider("distortion", 0.0, 1.0, &myMap.distortionAmount);
+    
+    gui.addSpacer();
     gui.addToggle("wireframe", &wireframe); wireframe = false;
     gui.addToggle("derivative", &derivative); derivative = false;
     
@@ -34,7 +37,8 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update(){
-    myMap.distortionAmount = float(ofGetMouseX()) / float(ofGetWidth());
+    //myMap.distortionAmount = float(ofGetMouseX()) / float(ofGetWidth());
+    myMap.mousePos = ofVec2f(ofGetMouseX(), ofGetMouseY());
 }
 
 //--------------------------------------------------------------
@@ -68,7 +72,7 @@ void testApp::mouseMoved(int x, int y){
     string name = "derivative: " + vec2string(myMap.derivativeAtScreenCoord(x, y));
     //cout << name << endl;
     
-    myMap.distortionAmount = float(ofGetMouseX()) / float(ofGetWidth());
+    //myMap.distortionAmount = float(ofGetMouseX()) / float(ofGetWidth());
     
 }
 
@@ -84,7 +88,7 @@ void testApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
-
+    myMap.clicked = true;
 }
 
 //--------------------------------------------------------------

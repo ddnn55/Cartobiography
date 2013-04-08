@@ -7,7 +7,7 @@ uniform vec2 mapSize;
 uniform vec2 meshSize;
 uniform vec2 distortionSize;
 
-uniform float normalMouseX;
+uniform float distortionAmount;
 
 uniform int derivative;
 
@@ -32,5 +32,5 @@ void main(void) {
     vec4 distortedPosition = gl_ModelViewProjectionMatrix * distortedVertex;
     vec4 undisortedPosition = gl_ModelViewProjectionMatrix * gl_Vertex;
     
-    gl_Position = mix(distortedPosition, undisortedPosition, normalMouseX);
+    gl_Position = mix(distortedPosition, undisortedPosition, distortionAmount);
 }

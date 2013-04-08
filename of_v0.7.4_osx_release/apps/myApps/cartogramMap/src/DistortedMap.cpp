@@ -28,6 +28,7 @@ void DistortedMap::load(Bounds<float> bounds, std::string distortionFilename, st
     glEnable(GL_DEPTH_TEST);
     
     shader.load("shaders/distort.vert", "shaders/distort.frag");
+    imageShader.load("shaders/imageShader.vert", "shaders/imageShader.frag");
     
     gMap.load(4, bounds);
     
@@ -129,7 +130,7 @@ ofVec2f DistortedMap::lngLatToScreen(ofVec2f lngLat)
     ofFloatColor gridDistortedPosSample = DNS::Image::Sample(distortion, distortionGridPos);
     ofVec2f normalDistortedPos(gridDistortedPosSample.r, gridDistortedPosSample.g);
     
-    ofVec2f normalInterpolatedPos = DNS::Geometry::InterpolateLinear(normalDistortedPos, undistortedNormalPos, distortionAmount);
+    ofVec2f normalInterpolatedPos = DNS::Geometry::InterpolateLinear(normalDistortedPos, undistortedNormalPos, 1.0-distortionAmount);
      
     return DNS::Geometry::Map(normalInterpolatedPos, Bounds<float>::normalBounds(), screenBounds());
 }
@@ -169,7 +170,7 @@ void DistortedMap::draw(float x, float y)
     shader.setUniform2f("distortionSize", distortionSE.x, distortionSE.y);
     shader.setUniform2f("meshSize", (CARTOGRAM_GRID_SIZE+1), (CARTOGRAM_GRID_SIZE+1));
     
-    shader.setUniform1f("normalMouseX", distortionAmount);
+    shader.setUniform1f("distortionAmount", 1.0 - distortionAmount);
     
     float aspect = gMap.map.width / gMap.map.height;
     float scaleX = float(ofGetWidth()) / float(CARTOGRAM_GRID_SIZE+1);
@@ -195,6 +196,11 @@ void DistortedMap::drawPhotos()
     qdt::QuadTree qt(qtBounds);
     
     std::vector< qdt::QuadTreeOccupant* > occupants(photos.size());
+    
+    imageShader.begin();
+    imageShader.setUniform1f("imageRadius", imageSize);
+    
+    ofSetCircleResolution( TWO_PI * imageSize );
     
     for(int p = 0; p < photos.size(); p++)
     {
@@ -226,10 +232,32 @@ void DistortedMap::drawPhotos()
             
             glPushMatrix();
                 ofTranslate(pos.x, pos.y);
-                photos[p].draw(imageSize);
+                photos[p].draw(imageSize, imageShader);
             glPopMatrix();
         }
     }
+    
+    imageShader.end();
+    
+    std::vector<qdt::QuadTreeOccupant *> hits;
+    qt.Query(qdt::AABB(Vec2f(mousePos.x, mousePos.y), Vec2f(mousePos.x, mousePos.y)), hits);
+    if(hits.size() > 0 && ofDist(mousePos.x, mousePos.y, hits[0]->aabb.GetCenter().x, hits[0]->aabb.GetCenter().y) <= imageSize)
+    {
+        if(clicked)
+            ((Photo*)hits[0]->userData)->launch();
+            
+        
+        ofStyle s;
+        s.lineWidth = 3.0;
+        s.bFill = false;
+        
+        ofPushStyle();
+            ofSetStyle(s);
+            ofCircle(hits[0]->aabb.GetCenter().x, hits[0]->aabb.GetCenter().y, imageSize);
+        ofPopStyle();
+    }
+    
+    clicked = false;
     
     if(renderQuadTree)
         qt.DebugRender();

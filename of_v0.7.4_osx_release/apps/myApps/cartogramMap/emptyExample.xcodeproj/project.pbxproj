@@ -16,6 +16,8 @@
 		13E64FEF170F719300535EB3 /* json_writer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E64FEB170F719300535EB3 /* json_writer.cpp */; };
 		13E64FF2170F73D900535EB3 /* Photo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E64FF0170F73D900535EB3 /* Photo.cpp */; };
 		13E64FF5170F87DD00535EB3 /* Geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13E64FF3170F87DD00535EB3 /* Geometry.cpp */; };
+		13E64FF817132D3500535EB3 /* imageShader.vert in Sources */ = {isa = PBXBuildFile; fileRef = 13E64FF717132D3500535EB3 /* imageShader.vert */; };
+		13E64FFA17132D4000535EB3 /* imageShader.frag in Sources */ = {isa = PBXBuildFile; fileRef = 13E64FF917132D4000535EB3 /* imageShader.frag */; };
 		BAFAF34D1711FF4A00611E68 /* QuadTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAFAF34A1711FF4A00611E68 /* QuadTree.cpp */; };
 		BAFAF34E1711FF4A00611E68 /* QuadTreeNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAFAF34B1711FF4A00611E68 /* QuadTreeNode.cpp */; };
 		BAFAF34F1711FF4A00611E68 /* QuadTreeOccupant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAFAF34C1711FF4A00611E68 /* QuadTreeOccupant.cpp */; };
@@ -147,6 +149,8 @@
 		13E64FF1170F73D900535EB3 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
 		13E64FF3170F87DD00535EB3 /* Geometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Geometry.cpp; path = DNS/Geometry.cpp; sourceTree = SOURCE_ROOT; };
 		13E64FF4170F87DD00535EB3 /* Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Geometry.h; path = DNS/Geometry.h; sourceTree = SOURCE_ROOT; };
+		13E64FF717132D3500535EB3 /* imageShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = imageShader.vert; sourceTree = "<group>"; };
+		13E64FF917132D4000535EB3 /* imageShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = imageShader.frag; sourceTree = "<group>"; };
 		BAFAF333170CA78900611E68 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		BAFAF34A1711FF4A00611E68 /* QuadTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QuadTree.cpp; path = light/src/QuadTree.cpp; sourceTree = "<group>"; };
 		BAFAF34B1711FF4A00611E68 /* QuadTreeNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QuadTreeNode.cpp; path = light/src/QuadTreeNode.cpp; sourceTree = "<group>"; };
@@ -227,6 +231,8 @@
 			children = (
 				1312556116F13CDB00338F15 /* distort.frag */,
 				1312556216F13CDB00338F15 /* distort.vert */,
+				13E64FF717132D3500535EB3 /* imageShader.vert */,
+				13E64FF917132D4000535EB3 /* imageShader.frag */,
 			);
 			path = shaders;
 			sourceTree = "<group>";
@@ -552,6 +558,8 @@
 				BAFAF34E1711FF4A00611E68 /* QuadTreeNode.cpp in Sources */,
 				BAFAF34F1711FF4A00611E68 /* QuadTreeOccupant.cpp in Sources */,
 				BAFAF3511712031F00611E68 /* Constructs.cpp in Sources */,
+				13E64FF817132D3500535EB3 /* imageShader.vert in Sources */,
+				13E64FFA17132D4000535EB3 /* imageShader.frag in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
